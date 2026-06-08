@@ -1,0 +1,39 @@
+{
+	"schemaVersion": 1,
+	"id": "jabsfixedcombat",
+	"version": "${version}",
+	"name": "Jabs Fixed Combat",
+	"description": "I Fixed Combat",
+	"authors": [
+		"Green_Jab"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"icon": "assets/jabsfixedcombat/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.greenjab.jabsfixedcombat.JabsFixedCombat"
+		],
+		"client": [
+			"net.greenjab.jabsfixedcombat.client.JabsFixedCombatClient"
+		]
+	},
+	"mixins": [
+		"jabsfixedcombat.mixins.json",
+		{
+			"config": "jabsfixedcombat.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "0.151.0+26.1.2"
+	},
+	"accessWidener" : "jabsfixedcombat.accesswidener"
+}
