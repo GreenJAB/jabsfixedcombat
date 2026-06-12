@@ -1,0 +1,22 @@
+{
+    "jabsfixedcombat.almost_vanilla_potions": "Almost Vanilla Potions",
+    "jabsfixedcombat.tiered_crafting": "Tiered Crafting",
+    "itemgroup.jabsfixedcombat": "Jabs Fixed Combat",
+    "item.jabsfixedcombat.broken_totem": "Broken Totem",
+    "item.jabsfixedcombat.echo_totem": "Echo Totem",
+    "item.jabsfixedcombat.echo_fruit": "Echo Fruit",
+    "container.fletching": "Arrow Crafting",
+    "container.anvil": "Repair & Enchant",
+    "effect.jabsfixedcombat.awkward": "No Effects",
+    "effect.jabsfixedcombat.reach": "Reach",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Need Insomnia in order to Sleep",
+    "gamerule.jabsfixedcombat.require_totem_use": "Need to actively use a Totem for it to function",
+    "gamerule.jabsfixedcombat.stamina_drain_speed": "Stamina Drain Speed",
+    "advancements.adventure.kill_with_tnt.title": "The Art Of War",
+    "advancements.adventure.kill_with_tnt.description": "Kill a Mob using TNT",
+    "advancements.adventure.kill_the_warden.title": "If It Bleeds",
+    "advancements.adventure.kill_the_warden.description": "Slay the Warden",
+    "advancements.end.kill_omen_dragon.title": "The Pantheon Of Minecraft",
+    "advancements.end.kill_omen_dragon.description": "Slay the Dragon under the influence of Bad Omen",
+    "item.jabsfixedcombat.spear": "Spear"
+}

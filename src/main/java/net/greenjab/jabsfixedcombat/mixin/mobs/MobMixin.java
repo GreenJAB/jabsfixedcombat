@@ -1,0 +1,175 @@
+package net.greenjab.jabsfixedcombat.mixin.mobs;
+
+import net.greenjab.jabsfixedcombat.util.ArmorTrimmer;
+import net.greenjab.jabsfixedcombat.util.ModTags;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.Difficulty;
+import net.minecraft.world.DifficultyInstance;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.Creeper;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.skeleton.Skeleton;
+import net.minecraft.world.entity.monster.spider.Spider;
+import net.minecraft.world.entity.monster.zombie.Husk;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.DyedItemColor;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.ServerLevelAccessor;
+import net.minecraft.world.level.biome.Biomes;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.List;
+import java.util.Objects;
+
+@Mixin(Mob.class)
+public abstract class MobMixin extends LivingEntity {
+
+    protected MobMixin(EntityType<? extends LivingEntity> entityType, Level world) {
+        super(entityType, world);
+    }
+
+    @Inject(method = "populateDefaultEquipmentSlots", at = @At(value = "HEAD"),cancellable = true)
+    private void Armor(RandomSource random, DifficultyInstance difficulty, CallbackInfo ci) {
+        int y= this.blockPosition().getY();
+        boolean pale = this.level().getBiome(this.blockPosition()).is(Biomes.PALE_GARDEN);
+        float f = this.level().getDifficulty() == Difficulty.HARD ? 0.175F : 0.075F;
+        if (pale) {
+            f*=2.25f;
+            this.addTag("pale");
+        }
+        if (y < this.level().getSeaLevel()) f += (this.level().getSeaLevel() - y) / (128 * 10f);
+        EquipmentSlot[] var6 = EquipmentSlot.values();
+        for (EquipmentSlot equipmentSlot : var6) {
+            if (random.nextFloat() < f * difficulty.getSpecialMultiplier()) {
+                int i = 2;
+                if (random.nextFloat() < f) i++;
+                if (random.nextFloat() < f) i++;
+                if (random.nextFloat() < f) i++;
+                if (i ==2) i = 0;
+
+                Mob ME = (Mob) (Object) this;
+                if (ME instanceof Husk) i = 2;
+
+                if (equipmentSlot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
+                    ItemStack itemStack = this.getItemBySlot(equipmentSlot);
+                    if (itemStack.isEmpty()) {
+                        ItemStack item = new ItemStack(Objects.requireNonNull(Mob.getEquipmentForSlot(equipmentSlot, i)));
+                        if (i==0) {
+                            List<DyeColor> colour = List.of(DyeColor.byId(this.level().getRandom().nextInt(16)));
+                            item = DyedItemColor.applyDyes(item, colour);
+                        }
+                        this.setItemSlot(equipmentSlot, ArmorTrimmer.trimAtChanceIfTrimable(item, this.random, this.level().registryAccess(), pale));
+                    }
+                }
+            }
+        }
+        ci.cancel();
+    }
+
+    @Redirect(method = "dropCustomDeathLoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isDamageableItem()Z"))
+    private boolean copperDurability(ItemStack instance) {
+        if (instance.is(ModTags.COPPER_ARMOR)) {
+            return false;
+        }
+        return instance.isDamageableItem();
+    }
+
+    @Inject(method = "finalizeSpawn", at=@At(value = "HEAD"))
+    private void addStuff(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, SpawnGroupData groupData,
+                          CallbackInfoReturnable<SpawnGroupData> cir){
+        Mob LE = (Mob)(Object)this;
+        int y= LE.blockPosition().getY();
+        if (LE instanceof Monster && level.dimensionType().hasSkyLight()) {
+            addEffect(level, difficulty, LE, y);
+            addModifiers(level, LE);
+
+        }
+    }
+
+    @Unique
+    private void addModifiers(ServerLevelAccessor world, Mob LE) {
+        int i = 0;
+        if (world.getDifficulty() == Difficulty.NORMAL) i = 1;
+        if (world.getDifficulty() == Difficulty.HARD) i = 2;
+        if (this.level().getBiome(this.blockPosition()).is(Biomes.PALE_GARDEN)) i = 3;
+        float h = i*3*gaussian();
+        increaseHealth(LE, h);
+        increaseSpeed(LE, i);
+    }
+
+    @Unique
+    private static void increaseSpeed(Mob LE, int i) {
+        if (LE.getAttribute(Attributes.MOVEMENT_SPEED)!=null) {
+            if (!LE.isBaby()) LE.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(
+                    LE.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) * (1 + (i * 0.15f * gaussian())));
+        }
+    }
+
+    @Unique
+    private static void increaseHealth(Mob LE, float h) {
+        if (LE.getAttribute(Attributes.MAX_HEALTH)!=null) {
+            LE.getAttribute(Attributes.MAX_HEALTH).setBaseValue(
+                    LE.getAttributeBaseValue(Attributes.MAX_HEALTH) + h);
+            LE.setHealth(LE.getHealth() + h);
+        }
+    }
+    @Unique
+    private void addEffect(ServerLevelAccessor world, DifficultyInstance localDifficulty, Mob LE, int y){
+        if (random.nextFloat() < 0.2f * localDifficulty.getSpecialMultiplier()) {
+            boolean pale = this.level().getBiome(this.blockPosition()).is(Biomes.PALE_GARDEN);
+            if ((world.getBrightness(LightLayer.SKY, LE.blockPosition()) < 7 ||pale)  && !(LE instanceof Spider)) {
+                if ((random.nextFloat() < (LE.level().getSeaLevel() - y) / 128f ||pale)) {
+                    MobEffectInstance effect = getEffect(random, LE);
+                    LE.addEffect(effect);
+                }
+            }
+        }
+    }
+
+    @Unique
+    private static float gaussian(){
+        return (float)(Math.tan(0.87433408*Math.PI*(Math.random()-0.5f))/10.0f)+0.5f;
+    }
+
+    @Unique
+    public MobEffectInstance getEffect(RandomSource random, LivingEntity LE) {
+        int l = 6;
+        if (LE instanceof Creeper) l+=5 ;
+        if (LE instanceof Skeleton) l+=3;
+        int i = random.nextInt(l);
+
+        if (i == 0) {
+            return new MobEffectInstance(MobEffects.SPEED, -1, 0);
+        } else if (i == 1) {
+            return new MobEffectInstance(MobEffects.STRENGTH, -1, 0);
+        } else if (i == 2) {
+            return new MobEffectInstance(MobEffects.JUMP_BOOST, -1, 1);
+        } else if (i == 3) {
+            return new MobEffectInstance(MobEffects.SLOW_FALLING, -1, 0);
+        } else if (i == 4) {
+            return new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 0);
+        } else if (i == 5) {
+            return new MobEffectInstance(MobEffects.ABSORPTION, -1, 0);
+        } else if (i == 6) {
+            return new MobEffectInstance(MobEffects.NAUSEA, -1, 0);
+        } else if (i == 7) {
+            return new MobEffectInstance(MobEffects.MINING_FATIGUE, -1, 0);
+        } else if (i == 8) {
+            return new MobEffectInstance(MobEffects.WEAKNESS, -1, 0);
+        } else if (i == 9) {
+            return new MobEffectInstance(MobEffects.REGENERATION, -1, 0);
+        } else if (i == 10) {
+            return new MobEffectInstance(MobEffects.LUCK, -1, 0);
+        }
+        return new MobEffectInstance(MobEffects.ABSORPTION, -1, 0);
+    }
+}

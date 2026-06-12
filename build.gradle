@@ -11,7 +11,17 @@ base {
 }
 
 repositories {
-
+	exclusiveContent {
+		forRepository {
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
+		}
+		filter {
+			includeGroup "maven.modrinth"
+		}
+	}
 }
 
 loom {
@@ -29,6 +39,9 @@ dependencies {
 	minecraft(libs.minecraft)
 	implementation(libs.fabric.loader)
 	implementation(libs.fabric.api)
+
+	implementation (libs.mixson)
+	include (libs.mixson)
 }
 
 processResources {
