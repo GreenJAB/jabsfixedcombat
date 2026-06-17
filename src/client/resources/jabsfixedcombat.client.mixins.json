@@ -12,7 +12,8 @@
     "AvatarRendererMixin",
     "EnderDragonModelMixin",
     "GuiMixin",
-    "LocalPlayerMixin"
+    "LocalPlayerMixin",
+    "MinecraftMixin"
   ],
   "client": [
     "EquipmentLayerRendererMixin"

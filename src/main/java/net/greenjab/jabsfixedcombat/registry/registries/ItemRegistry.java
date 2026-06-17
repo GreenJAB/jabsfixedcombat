@@ -37,9 +37,11 @@ public class ItemRegistry {
     );
 
 
-    public static final Consumable GLOW_BERRIES_EFFECT = food()
-            .onConsume(new ApplyStatusEffectsConsumeEffect(new MobEffectInstance(MobEffects.GLOWING, 200, 0), 1F))
-            .build();
+    public static final Consumable GLOW_BERRIES_EFFECT = food().onConsume(new ApplyStatusEffectsConsumeEffect(
+            new MobEffectInstance(MobEffects.GLOWING, 200, 0), 1F)).build();
+
+    public static final Consumable SWEET_BERRIES_EFFECT = food().onConsume(new ApplyStatusEffectsConsumeEffect(
+            new MobEffectInstance(MobEffects.SPEED, 200, 0), 1F)).build();
 
     public static Consumable.Builder food() {
         return Consumable.builder().consumeSeconds(1.6F).animation(ItemUseAnimation.EAT).sound(SoundEvents.GENERIC_EAT).hasConsumeParticles(true);

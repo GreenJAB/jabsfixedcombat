@@ -13,13 +13,11 @@ import net.minecraft.world.level.gamerules.*;
 import java.util.function.ToIntFunction;
 
 public class GameRuleRegistry {
-    public static GameRule<Boolean> INSOMNIA_SLEEP_REQUIREMENT;
     public static GameRule<Boolean> REQUIRE_TOTEM_USE;
     public static GameRule<Integer> STAMINA_DRAIN_SPEED;
 
     public static void registerGameRules() {
         System.out.println("register GameRules");
-        INSOMNIA_SLEEP_REQUIREMENT =registerBooleanRule("insomnia_sleep_requirement", GameRuleCategory.PLAYER, false);
         REQUIRE_TOTEM_USE = registerBooleanRule("require_totem_use", GameRuleCategory.PLAYER, false);
         STAMINA_DRAIN_SPEED = registerIntRule("stamina_drain_speed", GameRuleCategory.PLAYER, 100, 1);
     }

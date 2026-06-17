@@ -9,9 +9,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.component.BlocksAttacks;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.*;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(LivingEntity.class)
@@ -52,4 +50,22 @@ public abstract class LivingEntityMixin
     private int noShieldDelay(BlocksAttacks instance){
         return 0;
     }
+
+    //TODO decide if movement effects
+    /*@ModifyConstant(method = "jumpFromGround", constant = @Constant(doubleValue = 0.2))
+    private double speedJump(double constant) {
+        float i = 0;
+        if (this.hasEffect(MobEffects.SPEED)) {
+            i += 1+ this.getEffect(MobEffects.SPEED).getAmplifier();
+        }
+        if (this.hasEffect(MobEffects.JUMP_BOOST)) {
+            i +=0.5f*( 1+ this.getEffect(MobEffects.JUMP_BOOST).getAmplifier());
+        }
+        return constant+0.05F*i;
+    }
+
+    @ModifyConstant(method = "getJumpBoostPower", constant = @Constant(floatValue = 1.0f))
+    private float betterJumpBoost(float original){
+        return 2.0f;
+    }*/
 }
