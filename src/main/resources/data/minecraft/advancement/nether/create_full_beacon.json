@@ -1,0 +1,42 @@
+{
+    "parent": "minecraft:nether/create_beacon",
+    "criteria": {
+        "beacon": {
+            "trigger": "minecraft:consume_item",
+            "conditions": {
+                "item": {
+                    "items": [
+                        "minecraft:beacon"
+                    ]
+                }
+            }
+        }
+    },
+    "display": {
+        "description": {
+            "translate": "advancements.nether.create_full_beacon.description"
+        },
+        "frame": "challenge",
+        "icon": {
+            "components": {
+                "minecraft:enchantments": {
+                    "minecraft:mending": 1
+                }
+            },
+            "count": 1,
+            "id": "minecraft:beacon"
+        },
+        "title": {
+            "translate": "advancements.nether.create_full_beacon.title"
+        }
+    },
+    "requirements": [
+        [
+            "beacon"
+        ]
+    ],
+    "rewards": {
+        "experience": 3000
+    },
+    "sends_telemetry_event": true
+}

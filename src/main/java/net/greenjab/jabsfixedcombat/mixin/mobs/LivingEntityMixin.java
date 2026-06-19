@@ -1,16 +1,13 @@
 package net.greenjab.jabsfixedcombat.mixin.mobs;
 
 import net.greenjab.jabsfixedcombat.util.ModTags;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
@@ -96,19 +93,5 @@ public abstract class LivingEntityMixin {
         LivingEntity LE = (LivingEntity) (Object)this;
         if (LE instanceof Monster) return 0.3;
         return constant;
-    }
-
-    @Inject(method = "die", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;awardKillScore(Lnet/minecraft/world/entity/Entity;Lnet/minecraft/world/damagesource/DamageSource;)V"))
-    private void tntAdvancement(DamageSource source, CallbackInfo ci) {
-        if (source.getDirectEntity() instanceof PrimedTnt) {
-            if ((LivingEntity)(Object)this instanceof Monster) {
-                Entity player = source.getEntity();
-                if (player != null) {
-                    if (player instanceof ServerPlayer SPE) {
-                        CriteriaTriggers.CONSUME_ITEM.trigger(SPE, Items.TNT.getDefaultInstance());
-                    }
-                }
-            }
-        }
     }
 }
