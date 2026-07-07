@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "破碎的圖騰",
+    "item.jabsfixedcombat.echo_totem": "回聲圖騰",
+    "item.jabsfixedcombat.echo_fruit": "回聲果實",
+    "container.fletching": "製箭台",
+    "effect.jabsfixedcombat.awkward": "無效果",
+    "effect.jabsfixedcombat.reach": "延伸距離",
+    "gamerule.jabsfixedcombat.require_totem_use": "必須主動使用圖騰才能生效",
+    "advancements.end.kill_omen_dragon.title": "Minecraft 萬神殿",
+    "advancements.end.kill_omen_dragon.description": "在不祥之兆效果下擊殺終界龍"
+}

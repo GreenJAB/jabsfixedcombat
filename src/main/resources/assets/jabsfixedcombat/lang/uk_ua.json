@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Використаний Тотем",
+    "item.jabsfixedcombat.echo_totem": "Ехо Тотем",
+    "item.jabsfixedcombat.echo_fruit": "Ехо Фрукт",
+    "container.fletching": "Створення стріл",
+    "effect.jabsfixedcombat.reach": "Досяжність",
+    "gamerule.jabsfixedcombat.require_totem_use": "Для того щоб активувати тотем, його треба використовувати",
+    "advancements.end.kill_omen_dragon.title": "Міцний горішок",
+    "advancements.end.kill_omen_dragon.description": "Вбийте Дракона краю під еффектом Поганої прикмети",
+    "effect.jabsfixedcombat.awkward": "Немає ефектів"
+}

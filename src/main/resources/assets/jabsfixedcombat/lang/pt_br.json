@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Totem Quebrado",
+    "item.jabsfixedcombat.echo_totem": "Totem do Eco",
+    "item.jabsfixedcombat.echo_fruit": "Fruta do Eco",
+    "container.fletching": "Fabricação de Flechas",
+    "effect.jabsfixedcombat.awkward": "Sem Efeitos",
+    "effect.jabsfixedcombat.reach": "Alcance",
+    "gamerule.jabsfixedcombat.require_totem_use": "Necessário usar o Totem ativamente para funcionar",
+    "advancements.end.kill_omen_dragon.title": "O Panteão do Minecraft",
+    "advancements.end.kill_omen_dragon.description": "Derrote o Dragão sob o efeito de Mau Presságio"
+}

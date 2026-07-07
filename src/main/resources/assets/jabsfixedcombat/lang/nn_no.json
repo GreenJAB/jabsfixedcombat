@@ -1,0 +1,17 @@
+{
+    "jabsfixedcombat.almost_vanilla_potions": "Nesten vanlege brygg",
+    "jabsfixedcombat.tiered_crafting": "Trinnvis progresjon",
+    "itemgroup.jabsfixedcombat": "Fiksa",
+    "item.jabsfixedcombat.broken_totem": "Øydelagt totem",
+    "item.jabsfixedcombat.echo_totem": "Atterljomstotem",
+    "item.jabsfixedcombat.echo_fruit": "Atterljomsfrukt",
+    "container.fletching": "Pilproduksjon",
+    "container.anvil": "Reparer og galdra",
+    "effect.jabsfixedcombat.awkward": "Ingen verknadar",
+    "effect.jabsfixedcombat.reach": "Rekkjevidde",
+    "gamerule.jabsfixedcombat.require_totem_use": "Du må aktivt nytta eit totem for å utløysa funksjonen",
+    "gamerule.jabsfixedcombat.stamina_drain_speed": "Snøggleig for utmødde",
+    "advancements.end.kill_omen_dragon.title": "Minecraft sitt panteon",
+    "advancements.end.kill_omen_dragon.description": "Drep draken medan du er påverka av ill jartegn",
+    "item.jabsfixedcombat.heavy_spear": "Spjut"
+}

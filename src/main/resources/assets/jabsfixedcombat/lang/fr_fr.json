@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Totem brisé",
+    "item.jabsfixedcombat.echo_totem": "Totem d'écho",
+    "item.jabsfixedcombat.echo_fruit": "Fruit d'écho",
+    "container.fletching": "Fabrication de flèche",
+    "effect.jabsfixedcombat.awkward": "Sans effet",
+    "effect.jabsfixedcombat.reach": "Portée",
+    "gamerule.jabsfixedcombat.require_totem_use": "Les Totems doivent être utilisés activement pour fonctionner",
+    "advancements.end.kill_omen_dragon.title": "Le pantheon de Minecraft",
+    "advancements.end.kill_omen_dragon.description": "Vaincre le dragon sous l'influence du mauvais présage."
+}

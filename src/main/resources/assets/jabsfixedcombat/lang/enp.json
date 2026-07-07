@@ -1,0 +1,12 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Broken Token",
+    "item.jabsfixedcombat.echo_totem": "Edring Token",
+    "item.jabsfixedcombat.echo_fruit": "Edring Ovet",
+    "container.fletching": "Arrow Crafting",
+    "effect.jabsfixedcombat.awkward": "No Rines",
+    "effect.jabsfixedcombat.reach": "Reach",
+    "gamerule.jabsfixedcombat.require_totem_use": "Need to wakerly use a Token for it to work",
+    "advancements.end.kill_omen_dragon.title": "The God Of Minecraft",
+    "advancements.end.kill_omen_dragon.description": "Slay the Worm under the sway of Bad Foreboding",
+    "item.jabsfixedcombat.heavy_spear": "Heavy Spear"
+}

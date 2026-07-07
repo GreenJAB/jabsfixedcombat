@@ -42,7 +42,7 @@ public abstract class KineticWeaponMixin {
     ))
     private double lessDamageForOtherSpear(double value,
                                            @Local(argsOnly = true) ItemStack stack) {
-        return value*(stack.is(ItemRegistry.SPEAR)?1:0.66);
+        return value*(stack.is(ItemRegistry.HEAVY_SPEAR)?1:0.66);
     }
 
     @Inject(method = "damageEntities", at = @At(
@@ -50,18 +50,15 @@ public abstract class KineticWeaponMixin {
             target = "Lnet/minecraft/world/entity/LivingEntity;stabAttack(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/entity/Entity;FZZZ)Z", shift = At.Shift.AFTER
     ), cancellable = true
     )
-    private void stopAfter4Pierce(ItemStack stack, int ticksRemaining, LivingEntity livingEntity, EquipmentSlot equipmentSlot, CallbackInfo ci) {
-        if(!stack.is(ItemRegistry.SPEAR)){
-            int count = livingEntity.stabbedEntities(entityx -> entityx instanceof LivingEntity);
-            if (count>=4) {
-                livingEntity.releaseUsingItem();
-                livingEntity.level().broadcastEntityEvent(livingEntity, EntityEvent.KINETIC_HIT);
-                if (livingEntity instanceof ServerPlayer serverPlayerEntity) {
-                    serverPlayerEntity.getCooldowns().addCooldown(stack, 20);
-                    CriteriaTriggers.SPEAR_MOBS_TRIGGER.trigger(serverPlayerEntity, count);
-                }
-                ci.cancel();
+    private void stopAfterPierce(ItemStack stack, int ticksRemaining, LivingEntity livingEntity, EquipmentSlot equipmentSlot, CallbackInfo ci) {
+        if(!stack.is(ItemRegistry.HEAVY_SPEAR)){
+            livingEntity.releaseUsingItem();
+            livingEntity.level().broadcastEntityEvent(livingEntity, EntityEvent.KINETIC_HIT);
+            if (livingEntity instanceof ServerPlayer serverPlayerEntity) {
+                serverPlayerEntity.getCooldowns().addCooldown(stack, 20);
+                CriteriaTriggers.SPEAR_MOBS_TRIGGER.trigger(serverPlayerEntity, 1);
             }
+            ci.cancel();
         }
     }
 }

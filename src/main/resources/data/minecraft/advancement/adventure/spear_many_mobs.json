@@ -15,7 +15,7 @@
     "frame": "goal",
     "icon": {
       "count": 1,
-      "id": "jabsfixedcombat:spear"
+      "id": "jabsfixedcombat:heavy_spear"
     },
     "title": {
       "translate": "advancements.adventure.spear_many_mobs.title"

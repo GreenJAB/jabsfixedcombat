@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "טוטם שבור",
+    "item.jabsfixedcombat.echo_totem": "טוטם מהדהד",
+    "item.jabsfixedcombat.echo_fruit": "פרי מהדהד",
+    "container.fletching": "יצירת חצים",
+    "effect.jabsfixedcombat.awkward": "בלי השפעות",
+    "effect.jabsfixedcombat.reach": "הישג יד",
+    "gamerule.jabsfixedcombat.require_totem_use": "צריך להשתמש בטוטם באופן פעיל כדי שהוא יעבוד",
+    "advancements.end.kill_omen_dragon.title": "הפנתיאון של מיינקראפט",
+    "advancements.end.kill_omen_dragon.description": "הרגו את הדרקון בהשפעת קללה"
+}

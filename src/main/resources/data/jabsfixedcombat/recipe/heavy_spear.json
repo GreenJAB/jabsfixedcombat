@@ -2,8 +2,8 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "#": "minecraft:barrier",
-    "X": "#minecraft:wooden_tool_materials"
+    "#": "minecraft:breeze_rod",
+    "X": "minecraft:heavy_core"
   },
   "pattern": [
     "  X",
@@ -12,6 +12,6 @@
   ],
   "result": {
     "count": 1,
-    "id": "minecraft:wooden_spear"
+    "id": "jabsfixedcombat:heavy_spear"
   }
 }

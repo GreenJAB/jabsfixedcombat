@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Сломаный тотем",
+    "item.jabsfixedcombat.echo_totem": "Тотем эха",
+    "item.jabsfixedcombat.echo_fruit": "Фрукт эха",
+    "container.fletching": "Создание стрел",
+    "effect.jabsfixedcombat.awkward": "Без эффектов",
+    "effect.jabsfixedcombat.reach": "Досягаемость",
+    "gamerule.jabsfixedcombat.require_totem_use": "Для работы тотема бессмертия его необходимо активировать",
+    "advancements.end.kill_omen_dragon.title": "Пантеон Майнкравта",
+    "advancements.end.kill_omen_dragon.description": "Убейте дракона края под эффектом дурного знака"
+}

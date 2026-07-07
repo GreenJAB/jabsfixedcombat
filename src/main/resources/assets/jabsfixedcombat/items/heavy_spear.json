@@ -5,7 +5,7 @@
       {
         "model": {
           "type": "minecraft:model",
-          "model": "jabsfixedcombat:item/spear"
+          "model": "jabsfixedcombat:item/heavy_spear"
         },
         "when": [
           "gui",
@@ -17,7 +17,7 @@
     ],
     "fallback": {
       "type": "minecraft:model",
-      "model": "jabsfixedcombat:item/spear_in_hand"
+      "model": "jabsfixedcombat:item/heavy_spear_in_hand"
     },
     "property": "minecraft:display_context"
   },

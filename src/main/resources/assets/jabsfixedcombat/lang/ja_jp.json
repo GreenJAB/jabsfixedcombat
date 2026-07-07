@@ -1,0 +1,17 @@
+{
+    "jabsfixedcombat.almost_vanilla_potions": "Almost Vanilla Potions",
+    "jabsfixedcombat.tiered_crafting": "Tiered Crafting",
+    "itemgroup.jabsfixedcombat": "Fixed",
+    "item.jabsfixedcombat.broken_totem": "壊れた不死のトーテム",
+    "item.jabsfixedcombat.echo_totem": "エコートーテム",
+    "item.jabsfixedcombat.echo_fruit": "エコーフルーツ",
+    "container.fletching": "矢の製作",
+    "container.anvil": "修理・エンチャント",
+    "effect.jabsfixedcombat.awkward": "効果なし",
+    "effect.jabsfixedcombat.reach": "リーチ延長",
+    "gamerule.jabsfixedcombat.require_totem_use": "トーテムを使用しないと効果が発動しない",
+    "gamerule.jabsfixedcombat.stamina_drain_speed": "スタミナ消費速度",
+    "advancements.end.kill_omen_dragon.title": "マイクラの神殿",
+    "advancements.end.kill_omen_dragon.description": "不吉な予兆の影響下でエンダードラゴンを討伐する",
+    "item.jabsfixedcombat.heavy_spear": "槍"
+}

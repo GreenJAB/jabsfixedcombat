@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Rozbitý totem",
+    "item.jabsfixedcombat.echo_totem": "Totem ozvěny",
+    "item.jabsfixedcombat.echo_fruit": "Plod ozvěny",
+    "container.fletching": "Výroba šípů",
+    "effect.jabsfixedcombat.awkward": "Žádné účinky",
+    "effect.jabsfixedcombat.reach": "Dosah",
+    "gamerule.jabsfixedcombat.require_totem_use": "Nutno aktivně použít totem aby fungoval",
+    "advancements.end.kill_omen_dragon.title": "Panteon Minecraftu",
+    "advancements.end.kill_omen_dragon.description": "Poražte draka pod vlivem špatného znamení"
+}

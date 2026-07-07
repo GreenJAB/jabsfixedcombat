@@ -1,0 +1,17 @@
+{
+    "jabsfixedcombat.almost_vanilla_potions": "Nesten vanlige brygg",
+    "jabsfixedcombat.tiered_crafting": "Trinnvis progresjon",
+    "itemgroup.jabsfixedcombat": "Fikset",
+    "item.jabsfixedcombat.broken_totem": "Ødelagt totem",
+    "item.jabsfixedcombat.echo_totem": "Ekkototem",
+    "item.jabsfixedcombat.echo_fruit": "Ekkofrukt",
+    "container.fletching": "Pilproduksjon",
+    "container.anvil": "Reparer og fortryll",
+    "effect.jabsfixedcombat.awkward": "Ingen effekter",
+    "effect.jabsfixedcombat.reach": "Rekkevidde",
+    "gamerule.jabsfixedcombat.require_totem_use": "Du må aktivt bruke et totem for å utløse dets funksjon",
+    "gamerule.jabsfixedcombat.stamina_drain_speed": "Hastighet på utholdenhetsdrenering",
+    "advancements.end.kill_omen_dragon.title": "Minecrafts panteon",
+    "advancements.end.kill_omen_dragon.description": "Drep dragen mens du er påvirket av dårlig gjærtegn",
+    "item.jabsfixedcombat.heavy_spear": "Spyd"
+}

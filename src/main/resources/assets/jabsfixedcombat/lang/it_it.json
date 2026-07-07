@@ -1,0 +1,12 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Totem Rotto",
+    "item.jabsfixedcombat.echo_totem": "Totem Della Risonanza",
+    "item.jabsfixedcombat.echo_fruit": "Frutto Della Risonanza",
+    "container.fletching": "Creazione Di Frecce",
+    "effect.jabsfixedcombat.awkward": "Nessun Effetto",
+    "effect.jabsfixedcombat.reach": "Raggiungere",
+    "gamerule.jabsfixedcombat.require_totem_use": "È Necessario Utilizzare Attivamente Un Totem Affinché Funzioni",
+    "advancements.end.kill_omen_dragon.title": "Il Pàntheon di Minecraft",
+    "advancements.end.kill_omen_dragon.description": "Uccidi il drago sotto l'influenza di cattivo presagio"
+}
+

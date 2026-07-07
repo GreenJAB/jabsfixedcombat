@@ -1,16 +1,11 @@
 {
-    "jabsfixedcombat.almost_vanilla_potions": "Almost Vanilla Potions",
-    "jabsfixedcombat.tiered_crafting": "Tiered Crafting",
-    "itemgroup.jabsfixedcombat": "Jabs Fixed Combat",
     "item.jabsfixedcombat.broken_totem": "Broken Totem",
     "item.jabsfixedcombat.echo_totem": "Echo Totem",
     "item.jabsfixedcombat.echo_fruit": "Echo Fruit",
     "container.fletching": "Arrow Crafting",
-    "container.anvil": "Repair & Enchant",
     "effect.jabsfixedcombat.awkward": "No Effects",
     "effect.jabsfixedcombat.reach": "Reach",
     "gamerule.jabsfixedcombat.require_totem_use": "Need to actively use a Totem for it to function",
-    "gamerule.jabsfixedcombat.stamina_drain_speed": "Stamina Drain Speed",
     "advancements.end.kill_omen_dragon.title": "The Pantheon Of Minecraft",
     "advancements.end.kill_omen_dragon.description": "Slay the Dragon under the influence of Bad Omen",
     "item.jabsfixedcombat.heavy_spear": "Heavy Spear"

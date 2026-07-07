@@ -1,0 +1,11 @@
+{
+    "item.jabsfixedcombat.broken_totem": "Zniszczony Totem",
+    "item.jabsfixedcombat.echo_totem": "Totem Echo",
+    "item.jabsfixedcombat.echo_fruit": "Owoc Echo",
+    "container.fletching": "Wytwarzanie Strzał",
+    "effect.jabsfixedcombat.awkward": "Brak Efektów",
+    "effect.jabsfixedcombat.reach": "Zasięg",
+    "gamerule.jabsfixedcombat.require_totem_use": "Potrzebne jest używanie Totemu, aby działał",
+    "advancements.end.kill_omen_dragon.title": "Mitologia Minecrafta",
+    "advancements.end.kill_omen_dragon.description": "Pokonaj smoka kresu z efektem zły omen"
+}
