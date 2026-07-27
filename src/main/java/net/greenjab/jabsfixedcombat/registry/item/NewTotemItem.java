@@ -28,12 +28,10 @@ public class NewTotemItem extends Item {
         return 72000;
     }
     @Override
-    public @NonNull InteractionResult use(@NonNull Level world, @NonNull Player user, @NonNull InteractionHand hand)  {
-        if (world instanceof ServerLevel serverWorld) {
-            if (serverWorld.getGameRules().get(GameRuleRegistry.REQUIRE_TOTEM_USE)) {
-                user.playSound(SoundEvents.SPYGLASS_USE, 1.0f, 1.0f);
-                return ItemUtils.startUsingInstantly(world, user, hand);
-            }
+    public @NonNull InteractionResult use(@NonNull Level level, @NonNull Player user, @NonNull InteractionHand hand)  {
+        if (level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRuleRegistry.REQUIRE_TOTEM_USE)) {
+            user.playSound(SoundEvents.SPYGLASS_USE, 1.0f, 1.0f);
+            return ItemUtils.startUsingInstantly(level, user, hand);
         }
         return InteractionResult.PASS;
     }

@@ -1,64 +1,49 @@
 package net.greenjab.jabsfixedcombat.mixin.food;
 
-
+import com.llamalad7.mixinextras.sugar.Local;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.network.SyncHandler;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Entity
 {
+    @Shadow public abstract @NonNull ServerLevel level();
+
     public ServerPlayerMixin(EntityType<?> entityType, Level world)
     {
         super(entityType, world);
     }
 
     @Inject(at = @At("HEAD"), method = "tick")
-    void onUpdate(CallbackInfo info)
-    {
+    void onUpdate(CallbackInfo info) {
         ServerPlayer player = (ServerPlayer) (Object) this;
         SyncHandler.onPlayerUpdate(player);
-    }
-
-    @ModifyConstant(method = "checkMovementStatistics", constant = @Constant(floatValue = 0.1f))
-    public float armorDrainsStamina(float constant) {
-        int weight = 0;
-        ServerPlayer player = (ServerPlayer) (Object) this;
-        for (ItemStack item : JabsFixedCombat.getArmor(player)) {
-            String s = item.getItemName().toString();
-            if (s.contains("iron")||s.contains("gold")) weight+=1;
-            if (s.contains("diamond")||s.contains("netherite")) weight+=2;
-        }
-        int diff = this.level().getDifficulty().getId();
-        float multiplier = (diff*weight)/48.0f;
-        return 0.1f*(multiplier+1.0f);
     }
 
     @ModifyConstant(method = "checkMovementStatistics", constant = @Constant(floatValue = 0.01f, ordinal = 0))
     public float swimDrainsStamina(float constant) {
         ServerPlayer player = (ServerPlayer) (Object) this;
-        if (player.isAutoSpinAttack()) {
-            return 0;
-        }
-        int weight = 0;
-        for (ItemStack item : JabsFixedCombat.getArmor(player)) {
-            String s = item.getItemName().toString();
-            if (s.contains("iron")||s.contains("gold")) weight+=1;
-            if (s.contains("diamond")||s.contains("netherite")) weight+=2;
-        }
-        int diff = this.level().getDifficulty().getId();
-        float multiplier = (diff*weight)/48.0f;
-        return 0.06f*(multiplier+1.0f);
+        if (player.isAutoSpinAttack()) return 0;
+        if (player.hasEffect(MobEffects.DOLPHINS_GRACE)) return 0;
+        return 0.06f;
     }
 
     @ModifyConstant(method = "checkMovementStatistics", constant = @Constant(floatValue = 0.01f, ordinal = 2))
@@ -68,6 +53,7 @@ public abstract class ServerPlayerMixin extends Entity
 
     @Inject(method = "tick", at = @At(value = "HEAD"))
     private void shieldDrainsStamina(CallbackInfo ci) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return;
         ServerPlayer SPE = (ServerPlayer) (Object)this;
         if (SPE.isBlocking()) SPE.causeFoodExhaustion(0.03f);
     }
@@ -75,5 +61,15 @@ public abstract class ServerPlayerMixin extends Entity
     @ModifyConstant(method = "jumpFromGround", constant = @Constant(floatValue = 0.05f))
     private float noStaminaNormalJump(float constant) {
         return 0;
+    }
+
+    @Inject(method = "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At(value = "RETURN"))
+    private void itemsOnGroundForLonger(ItemStack itemStack, boolean randomly, boolean thrownFromHand, CallbackInfoReturnable<ItemEntity> cir,
+                                        @Local ItemEntity entity) {
+        if (!thrownFromHand && entity != null) {
+            int ticks = this.level().getGameRules().get(GameRuleRegistry.ITEM_DEATH_DESPAWN_TIME)*20*60;
+            if (ticks == 0) entity.setUnlimitedLifetime();
+            else entity.age = 6000-ticks;
+        }
     }
 }

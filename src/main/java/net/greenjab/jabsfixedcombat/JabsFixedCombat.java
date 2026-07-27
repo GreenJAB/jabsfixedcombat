@@ -5,12 +5,14 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
 import net.fabricmc.loader.api.FabricLoader;
+import net.greenjab.jabsfixedcombat.network.GameRuleStatus;
 import net.greenjab.jabsfixedcombat.network.SyncHandler;
 import net.greenjab.jabsfixedcombat.registry.registries.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.Identifier;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
@@ -27,6 +29,9 @@ public class JabsFixedCombat implements ModInitializer {
 	public static final String MOD_NAME = "Jabs Fixed Combat";
 	public static final String NAMESPACE = "jabsfixedcombat";
 	public static final Logger LOGGER = LoggerFactory.getLogger(NAMESPACE);
+
+	public static MinecraftServer SERVER = null;
+	public static GameRuleStatus gameRules = new GameRuleStatus();
 
 	@Override
 	public void onInitialize() {
@@ -45,13 +50,18 @@ public class JabsFixedCombat implements ModInitializer {
 		DispenserBlock.registerProjectileBehavior(Items.RESIN_BRICK);
 		DispenserBlock.registerProjectileBehavior(Items.TRIDENT);
 
-		FabricLoader.getInstance().getModContainer(NAMESPACE).ifPresent(modContainer ->
+		FabricLoader.getInstance().getModContainer(NAMESPACE).ifPresent(modContainer -> {
 			ResourceManagerHelper.registerBuiltinResourcePack(
-                JabsFixedCombat.id("tiered_crafting"),
-                modContainer,
-                Component.nullToEmpty("fixedminecraft.tiered_crafting"),
-                ResourcePackActivationType.NORMAL)
-		);
+					JabsFixedCombat.id("tiered_crafting"),
+					modContainer,
+					Component.nullToEmpty("jabsfixedcombat.tiered_crafting"),
+					ResourcePackActivationType.NORMAL);
+			ResourceManagerHelper.registerBuiltinResourcePack(
+					JabsFixedCombat.id("harder_eye_of_ender"),
+					modContainer,
+					Component.nullToEmpty("jabsfixedcombat.harder_eye_of_ender"),
+					ResourcePackActivationType.DEFAULT_ENABLED);
+		});
 	}
 
 	public static ArrayList<ItemStack> getArmor(LivingEntity entity) {

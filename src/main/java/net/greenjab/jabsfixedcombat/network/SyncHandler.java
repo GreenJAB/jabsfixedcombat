@@ -12,6 +12,7 @@ public class SyncHandler
     public static void init()
     {
         PayloadTypeRegistry.clientboundPlay().register(SaturationSyncPayload.ID, SaturationSyncPayload.CODEC);
+        GameRulePayload.register();
     }
 
     private static final Map<UUID, Float> lastSaturationLevels = new HashMap<>();

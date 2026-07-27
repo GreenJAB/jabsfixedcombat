@@ -2,6 +2,8 @@ package net.greenjab.jabsfixedcombat.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.greenjab.jabsfixedcombat.registry.registries.ItemRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
@@ -20,37 +22,28 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(KineticWeapon.class)
 public abstract class KineticWeaponMixin {
 
-    @ModifyExpressionValue(method = "damageEntities", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/item/component/KineticWeapon;getMotion(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/phys/Vec3;"
-            ))
+    @ModifyExpressionValue(method = "damageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/component/KineticWeapon;getMotion(Lnet/minecraft/world/entity/Entity;)Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontUseYVel(Vec3 original) {
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.SPEARS_ONLY_HORIZONTAL)) return original;
         return original.horizontal();
     }
 
-    @ModifyExpressionValue(method = "damageEntities", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;getLookAngle()Lnet/minecraft/world/phys/Vec3;"
-    ))
+    @ModifyExpressionValue(method = "damageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getLookAngle()Lnet/minecraft/world/phys/Vec3;"))
     private Vec3 dontUseYVel2(Vec3 original) {
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.SPEARS_ONLY_HORIZONTAL)) return original;
         return original.horizontal();
     }
 
-    @ModifyArg(method = "damageEntities", at = @At(
-            value = "INVOKE",
-       target = "Lnet/minecraft/util/Mth;floor(D)I"
-    ))
-    private double lessDamageForOtherSpear(double value,
-                                           @Local(argsOnly = true) ItemStack stack) {
+    @ModifyArg(method = "damageEntities", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;floor(D)I"))
+    private double lessDamageForOtherSpear(double value, @Local(argsOnly = true) ItemStack stack) {
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.NERF_VANILLA_SPEARS)) return value;
         return value*(stack.is(ItemRegistry.HEAVY_SPEAR)?1:0.66);
     }
 
-    @Inject(method = "damageEntities", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/LivingEntity;stabAttack(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/entity/Entity;FZZZ)Z", shift = At.Shift.AFTER
-    ), cancellable = true
-    )
+    @Inject(method = "damageEntities", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/entity/LivingEntity;stabAttack(Lnet/minecraft/world/entity/EquipmentSlot;Lnet/minecraft/world/entity/Entity;FZZZ)Z", shift = At.Shift.AFTER), cancellable = true)
     private void stopAfterPierce(ItemStack stack, int ticksRemaining, LivingEntity livingEntity, EquipmentSlot equipmentSlot, CallbackInfo ci) {
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.NERF_VANILLA_SPEARS)) return;
         if(!stack.is(ItemRegistry.HEAVY_SPEAR)){
             livingEntity.releaseUsingItem();
             livingEntity.level().broadcastEntityEvent(livingEntity, EntityEvent.KINETIC_HIT);

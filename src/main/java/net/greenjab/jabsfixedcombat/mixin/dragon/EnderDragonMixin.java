@@ -1,6 +1,9 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -12,7 +15,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragonPart;
-import net.minecraft.world.entity.boss.enderdragon.phases.DragonPhaseInstance;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhase;
 import net.minecraft.world.entity.boss.enderdragon.phases.EnderDragonPhaseManager;
 import net.minecraft.world.entity.projectile.arrow.SpectralArrow;
@@ -34,16 +36,9 @@ import java.util.List;
 @Mixin(EnderDragon.class)
 public abstract class EnderDragonMixin {
 
-    @Shadow
-    @Final
-    private EnderDragonPhaseManager phaseManager;
-
-    @Shadow
-    @Final
-    private EnderDragonPart body;
-
-    @Shadow
-    private @Nullable EnderDragonFight dragonFight;
+    @Shadow @Final private EnderDragonPhaseManager phaseManager;
+    @Shadow @Final private EnderDragonPart body;
+    @Shadow private @Nullable EnderDragonFight dragonFight;
 
     @ModifyConstant(method = "findClosestNode()I", constant = @Constant(intValue = 73))
     private int newMinHeight(int constant){
@@ -57,31 +52,28 @@ public abstract class EnderDragonMixin {
 
     @ModifyConstant(method = "aiStep", constant = @Constant(doubleValue = 0.01, ordinal = 0))
     private double fasterYMovement(double constant){
-        if (this.phaseManager.getCurrentPhase().getPhase() == EnderDragonPhase.CHARGING_PLAYER) {
-            //return 0.1; //for some reason was much stronger than in base mod
-        }
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return constant;
         return 0.05;
     }
 
-    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Ljava/lang/Math;sqrt(D)D"))
+    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Ljava/lang/Math;sqrt(D)D"))
     private double fasterYMovement2(double a){
-        return Math.sqrt(a) * 0.3;
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return a;
+        return a * 0.3;
     }
 
     @ModifyConstant(method = "aiStep", constant = @Constant(floatValue = 0.06f))
     private float fasterXZMovement(float value){
-        if (((EnderDragon) (Object)this).entityTags().contains("omen")) {
-            return 0.08f;
-        }
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return value;
+        if (((EnderDragon) (Object)this).entityTags().contains("omen")) return 0.08f;
         return value;
     }
 
-    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/phases/DragonPhaseInstance;getTurnSpeed()F"))
-    private float fasterRotating(DragonPhaseInstance instance) {
-        if (((EnderDragon) (Object)this).entityTags().contains("omen")) {
-            return instance.getTurnSpeed() * 1.5f;
-        }
-        return instance.getTurnSpeed();
+    @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/phases/DragonPhaseInstance;getTurnSpeed()F"))
+    private float fasterRotating(float original) {
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return original;
+        if (((EnderDragon) (Object)this).entityTags().contains("omen")) return original * 1.5f;
+        return original;
     }
 
     @ModifyConstant(method = "aiStep", constant = @Constant(doubleValue = 4.0))
@@ -111,16 +103,13 @@ public abstract class EnderDragonMixin {
         if (this.phaseManager.getCurrentPhase().getPhase()==EnderDragonPhase.DYING)  ci.cancel();
     }
 
-    @Inject(method = "aiStep", at = @At(
-            value = "INVOKE",
-            target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;knockBack(Lnet/minecraft/server/level/ServerLevel;Ljava/util/List;)V", ordinal = 0))
+    @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;knockBack(Lnet/minecraft/server/level/ServerLevel;Ljava/util/List;)V", ordinal = 0))
     private void launchWhileSitting(CallbackInfo ci, @Local ServerLevel serverLevel){
+        if (!serverLevel.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         if (this.phaseManager.getCurrentPhase().isSitting()) {
             EnderDragon EDE = (EnderDragon) (Object)this;
-            launchLivingEntities2(
-                    serverLevel,
-                    serverLevel.getEntities(EDE, this.body.getBoundingBox().inflate(1.0, 5.0, 1.0).move(0.0, -2.0, 0.0), EntitySelector.NO_CREATIVE_OR_SPECTATOR)
-            );
+            launchLivingEntities2(serverLevel, serverLevel.getEntities(EDE, this.body.getBoundingBox().inflate(1.0, 5.0, 1.0)
+                    .move(0.0, -2.0, 0.0), EntitySelector.NO_CREATIVE_OR_SPECTATOR));
         }
     }
 
@@ -141,19 +130,18 @@ public abstract class EnderDragonMixin {
         }
     }
 
-    @Inject(method = "<init>", at= @At(value = "INVOKE",
-                                       target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;<init>(Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;Ljava/lang/String;FF)V", ordinal = 0
-    ))
+    @Inject(method = "<init>", at= @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;<init>(Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;Ljava/lang/String;FF)V", ordinal = 0))
     private void moreHealth(EntityType<? extends EnderDragon> type, Level level, CallbackInfo ci){
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         EnderDragon EDE = (EnderDragon) (Object)this;
         int[] health = {150, 200, 300, 400};
         EDE.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health[EDE.level().getDifficulty().getId()]);
     }
 
-    @Inject(method = "hurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(
-            value = "HEAD"), cancellable = true)
+    @Inject(method = "hurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "HEAD"), cancellable = true)
     private void ignoreExplosions(ServerLevel level, EnderDragonPart part, DamageSource source, float damage,
                                   CallbackInfoReturnable<Boolean> cir) {
+        if (!level.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         if(source.getEntity() instanceof EnderDragon)cir.setReturnValue(false);
     }
 
@@ -161,14 +149,12 @@ public abstract class EnderDragonMixin {
     private void addGlowingEffect(ServerLevel level, EnderDragonPart part, DamageSource source, float damage,
                                   CallbackInfoReturnable<Boolean> cir){
         EnderDragon EDE = (EnderDragon) (Object)this;
-        if (source.getDirectEntity() instanceof SpectralArrow) {
-            EDE.forceAddEffect(new MobEffectInstance(MobEffects.GLOWING, 600), source.getEntity());
-        }
+        if (source.getDirectEntity() instanceof SpectralArrow) EDE.forceAddEffect(new MobEffectInstance(MobEffects.GLOWING, 600), source.getEntity());
     }
 
-    @Inject(method = "checkWalls", at = @At(
-            value = "HEAD"), cancellable = true)
+    @Inject(method = "checkWalls", at = @At(value = "HEAD"), cancellable = true)
     private void dontBreakBlocksAfterFirst(ServerLevel level, AABB bb, CallbackInfoReturnable<Boolean> cir){
+        if (!level.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         EnderDragon EDE = (EnderDragon) (Object)this;
         if (this.dragonFight == null) return;
         if (this.dragonFight.hasPreviouslyKilledDragon() && !EDE.entityTags().contains("omen")) {
@@ -179,19 +165,17 @@ public abstract class EnderDragonMixin {
 
     @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 500))
     private int moreOmenXP(int constant){
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return constant;
         EnderDragon EDE = (EnderDragon) (Object)this;
-        if (EDE.entityTags().contains("omen")) {
-            return constant*3;
-        }
+        if (EDE.entityTags().contains("omen"))  return constant*3;
         return constant;
     }
 
     @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 12000))
     private int lessNormalXP(int constant){
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return constant;
         EnderDragon EDE = (EnderDragon) (Object)this;
-        if (EDE.entityTags().contains("omen")) {
-            return 8000*3;
-        }
+        if (EDE.entityTags().contains("omen"))  return 8000*3;
         return 8000;
     }
 }

@@ -1,6 +1,9 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -55,9 +58,6 @@ public abstract class EnderDragonFightMixin {
     private boolean dragonKilled;
 
     @Shadow
-    protected abstract void spawnExitPortal(boolean activated);
-
-    @Shadow
     private @Nullable DragonRespawnStage respawnStage;
 
     @Shadow
@@ -86,9 +86,10 @@ public abstract class EnderDragonFightMixin {
 
     @Inject(method = "updatePlayers", at = @At(value = "HEAD"))
     private void omenBossBar(CallbackInfo ci) {
+
         if (!this.level.isClientSide()) {
             List<ServerPlayer> playerList = level.players();
-            if (!this.hasPreviouslyKilledDragon && this.level.getDifficulty().getId() > 1) {
+            if (!this.hasPreviouslyKilledDragon && level.getGameRules().get(GameRuleRegistry.DRAGON_WORLD_BORDER_BEFORE_KILL)) {
                 for (ServerPlayer player : playerList) {
                     if (player.level().dimensionType() == this.level.dimensionType()) {
                         WorldBorder WB = new WorldBorder();
@@ -105,8 +106,9 @@ public abstract class EnderDragonFightMixin {
                     }
                 }
             }
-        }//*/
+        }
         this.dragonEvent.setColor(BossEvent.BossBarColor.PINK);
+        if (!level.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         if (this.dragonUUID!=null) {
             if (this.level.getEntity(this.dragonUUID)!=null) {
                 if (this.level.getEntity(this.dragonUUID).entityTags().contains("omen")) {
@@ -116,21 +118,15 @@ public abstract class EnderDragonFightMixin {
         }
     }
 
-    @Redirect(method = "tryRespawn()V", at = @At(value = "INVOKE",
-                                                    target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;spawnExitPortal(Z)V"
-    ))
-    private void dontResetPortal(EnderDragonFight instance, boolean activated){
-        if (this.hasPreviouslyKilledDragon) {
-            this.spawnExitPortal(true);
-        }
+    @WrapOperation(method = "tryRespawn()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;spawnExitPortal(Z)V"))
+    private void dontResetPortal(EnderDragonFight instance, boolean activated, Operation<Void> original){
+        if (this.hasPreviouslyKilledDragon) original.call(instance, activated);
     }
 
-    @Redirect(method = "respawnDragon(Ljava/util/List;)V", at = @At(value = "INVOKE",
-                                                    target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;spawnExitPortal(Z)V"
-    ))
-    private void dontResetPortal2(EnderDragonFight instance, boolean activated){
+    @WrapOperation(method = "respawnDragon(Ljava/util/List;)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;spawnExitPortal(Z)V"))
+    private void dontResetPortal2(EnderDragonFight instance, boolean activated, Operation<Void> original){
         if (this.hasPreviouslyKilledDragon) {
-            this.spawnExitPortal(false);
+            original.call(instance, activated);
             for (ServerPlayer serverPlayerEntity : (this.level)
                     .getPlayers( serverPlayerEntityx -> serverPlayerEntityx.position().horizontalDistance() < 128.0F)) {
                 CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayerEntity, Items.END_CRYSTAL.getDefaultInstance());
@@ -146,45 +142,33 @@ public abstract class EnderDragonFightMixin {
                 this.respawnTime = 0;
                 this.respawnCrystals = crystals.stream().map(EntityReference::of).toList();
             }
-
             ci.cancel();
         }
     }
 
-
-    @Redirect(method = "findOrCreateDragon", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;createNewDragon()Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;"))
-    private EnderDragon dontSpawnDragon(EnderDragonFight instance){
+    @WrapOperation(method = "findOrCreateDragon", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;createNewDragon()Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;"))
+    private EnderDragon dontSpawnDragon(EnderDragonFight instance, Operation<EnderDragon> original){
         this.dragonKilled = true;
         return null;
     }
 
-    @Redirect(method = "onCrystalDestroyed", at = @At(value = "INVOKE", target = "Ljava/util/List;contains(Ljava/lang/Object;)Z"))
-    private boolean crystalfixer(List<EndCrystal> instance, Object o){
-        if (instance == null) {
-            return false;
-        }
-        if (instance.isEmpty()) {
-            return false;
-        }
-        return instance.contains((EndCrystal)o);
+    @WrapOperation(method = "onCrystalDestroyed", at = @At(value = "INVOKE", target = "Ljava/util/List;contains(Ljava/lang/Object;)Z"))
+    private boolean crystalFixer(List<EndCrystal> instance, Object o, Operation<Boolean> original){
+        if (instance == null || instance.isEmpty()) return false;
+        return original.call(instance, o);
     }
 
     @Inject(method = "spawnExitPortal", at = @At(value = "TAIL"))
     private void placeCrystals(CallbackInfo ci, @Local(argsOnly = true) boolean activated){
         if (!this.hasPreviouslyKilledDragon && !activated) {
-
             List<EndCrystal> list = this.level.getEntitiesOfClass(EndCrystal.class, new AABB(-50, 50, -50, 50, 120, 50));
-            for (EndCrystal endCrystalEntity : list) {
-                endCrystalEntity.kill(this.level);
-            }
-
+            for (EndCrystal endCrystalEntity : list) endCrystalEntity.kill(this.level);
             BlockPos blockPos = this.exitPortalLocation;
             assert blockPos != null;
             BlockPos b = blockPos.above(1);
             for (Direction d : Direction.values()) {
                 if (d.getAxis().isHorizontal()) {
                     EndCrystal endCrystalEntity = EntityType.END_CRYSTAL.create(this.level.getChunkAt(b.relative(d, 3)).getLevel(), EntitySpawnReason.CHUNK_GENERATION);
-
                     if (endCrystalEntity != null) {
                         endCrystalEntity.snapTo(b.relative(d, 3).getX()+0.5, b.getY(), b.relative(d, 3).getZ() + 0.5, 0, 0.0F);
                         endCrystalEntity.setInvulnerable(true);
@@ -209,10 +193,9 @@ public abstract class EnderDragonFightMixin {
         }
     }
 
-    @Inject(method = "createNewDragon", at= @At(value = "INVOKE",
-                                             target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"
-    ))
+    @Inject(method = "createNewDragon", at= @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerLevel;addFreshEntity(Lnet/minecraft/world/entity/Entity;)Z"))
     private void spawnOmenDragon(CallbackInfoReturnable<EnderDragon> cir, @Local EnderDragon dragon){
+        if (!level.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         Player playerEntity = this.level.getNearestPlayer(TargetingConditions.forCombat().range(150), dragon, dragon.getX(), dragon.getY(), dragon.getZ());
         if (playerEntity != null) {
             if (playerEntity.hasEffect(MobEffects.BAD_OMEN)) {
@@ -226,6 +209,7 @@ public abstract class EnderDragonFightMixin {
 
     @Inject(method = "setDragonKilled", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;spawnExitPortal(Z)V"))
     private void spawnElytraItem(EnderDragon dragon, CallbackInfo ci) {
+        if (!level.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         if (dragon.entityTags().contains("omen")) {
             ItemEntity itemEntity = new ItemEntity(dragon.level(), 0, dragon.getY()-2, 0, Items.ELYTRA.getDefaultInstance());
             itemEntity.snapTo(0.5f, dragon.getY(), 0.5f, 0.0F, 0);

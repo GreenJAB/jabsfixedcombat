@@ -1,5 +1,7 @@
 package net.greenjab.jabsfixedcombat.mixin.effects;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.greenjab.jabsfixedcombat.registry.registries.MobEffectRegistry;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
@@ -12,23 +14,14 @@ import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 
 @Mixin(Potions.class)
 public abstract class PotionsMixin {
 
-    @Redirect(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/Potions;register(Ljava/lang/String;Lnet/minecraft/world/item/alchemy/Potion;)Lnet/minecraft/core/Holder$Reference;",ordinal = 0), slice = @Slice( from = @At(
-            value = "FIELD",
-            target = "Lnet/minecraft/world/item/alchemy/Potions;THICK:Lnet/minecraft/core/Holder$Reference;",
-            opcode = Opcodes.PUTSTATIC
-    )))
-    private static Holder.Reference<Potion> purpleAwkward(String name, Potion potion) {
-        return register(new Potion("awkward", new MobEffectInstance(MobEffectRegistry.AWKWARD, 0)));
-    }
-
-    @Unique
-    private static Holder.Reference<Potion> register(Potion potion) {
-        return Registry.registerForHolder(BuiltInRegistries.POTION, Identifier.withDefaultNamespace("awkward"), potion);
+    @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/alchemy/Potions;register(Ljava/lang/String;Lnet/minecraft/world/item/alchemy/Potion;)Lnet/minecraft/core/Holder$Reference;", ordinal = 0), slice = @Slice( from = @At(
+            value = "FIELD", target = "Lnet/minecraft/world/item/alchemy/Potions;THICK:Lnet/minecraft/core/Holder$Reference;", opcode = Opcodes.PUTSTATIC)))
+    private static Holder.Reference<Potion> purpleAwkward(String name, Potion potion, Operation<Holder.Reference<Potion>> original) {
+        return original.call(name, new Potion("awkward", new MobEffectInstance(MobEffectRegistry.AWKWARD, 0)));
     }
 }

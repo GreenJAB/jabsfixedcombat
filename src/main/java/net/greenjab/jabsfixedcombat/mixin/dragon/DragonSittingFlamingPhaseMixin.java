@@ -1,6 +1,7 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.PowerParticleOption;
@@ -44,20 +45,16 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
 
     @Inject(method = "doServerTick", at = @At("HEAD"),cancellable = true)
     private void redoTick(CallbackInfo ci, @Local(argsOnly = true) ServerLevel level) {
-
+        if (!level.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         this.flameTicks++;
 
         TargetingConditions CLOSE_PLAYER_PREDICATE;
-        CLOSE_PLAYER_PREDICATE = TargetingConditions.forCombat()
-                .range(150.0)
-                .selector(/* method_18447 */ (player, _) -> Math.abs(player.getY() - this.dragon.getY()) <= 10.0);
-
-        LivingEntity livingEntity = level
-                .getNearestPlayer(CLOSE_PLAYER_PREDICATE, this.dragon, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
+        CLOSE_PLAYER_PREDICATE = TargetingConditions.forCombat().range(150.0)
+                .selector((player, _) -> Math.abs(player.getY() - this.dragon.getY()) <= 10.0);
+        LivingEntity livingEntity = level.getNearestPlayer(CLOSE_PLAYER_PREDICATE, this.dragon, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
 
         if (this.flameTicks >= 100) {
             if (this.dragon.getRandom().nextFloat()<((this.flameCount-1)/(this.flameCount+1.0f))) {
-
                 livingEntity = level.getNearestPlayer(TargetingConditions.forCombat().range(150.0), this.dragon, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
                 this.dragon.getPhaseManager().setPhase(EnderDragonPhase.TAKEOFF);
                 if (livingEntity != null) {
@@ -68,9 +65,7 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
                                 .setTarget(new Vec3(livingEntity.getX(), livingEntity.getY() - 1, livingEntity.getZ()));
                     }
                 }
-            } else {
-                this.dragon.getPhaseManager().setPhase(EnderDragonPhase.SITTING_SCANNING);
-            }
+            } else this.dragon.getPhaseManager().setPhase(EnderDragonPhase.SITTING_SCANNING);
         } else if (this.flameTicks == 5) {
             double dp = 0;
             if (livingEntity!=null) {
@@ -86,15 +81,11 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
                 double o = livingEntity.getX() - l;
                 double p = livingEntity.getY(0.5) - m;
                 double q = livingEntity.getZ() - n;
-                if (!this.dragon.isSilent()) {
-                    this.dragon.level().levelEvent(null, LevelEvent.SOUND_DRAGON_FIREBALL, this.dragon.blockPosition(), 0);
-                }
+                if (!this.dragon.isSilent()) this.dragon.level().levelEvent(null, LevelEvent.SOUND_DRAGON_FIREBALL, this.dragon.blockPosition(), 0);
                 DragonFireball dragonFireballEntity = new DragonFireball(this.dragon.level(), this.dragon, new Vec3(o, p, q));
                 dragonFireballEntity.snapTo(l, m, n, 0.0F, 0.0F);
                 this.dragon.level().addFreshEntity(dragonFireballEntity);
-
             } else {
-
                 Vec3 vec3d = new Vec3(
                         this.dragon.head.getX() - this.dragon.getX(), 0.0, this.dragon.head.getZ() - this.dragon.getZ()).normalize();
                 double d = this.dragon.head.getX() + vec3d.x * 5.0 / 2.0;
@@ -108,16 +99,12 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
                         h = g;
                         break;
                     }
-
                     mutable.set(d, h, e);
                 }
-
                 if (this.dragon.entityTags().contains("omen")) {
                     List<Entity> entities = this.dragon.level()
                             .getEntities(this.dragon, this.dragon.head.getBoundingBox().inflate(2.0, 3.0, 2.0).move(0.0, -1.0, 0.0), EntitySelector.NO_CREATIVE_OR_SPECTATOR);
-                    for (Entity ee : entities) {
-                        ee.setRemainingFireTicks(300);
-                    }
+                    for (Entity ee : entities) ee.setRemainingFireTicks(300);
                 }
 
                 h = (Mth.floor(h) + 1);
@@ -128,15 +115,12 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
                 this.dragon.level().addFreshEntity(areaEffectCloudEntity);
             }
         } else if (this.flameTicks >= 30) {
-
             if (livingEntity != null) {
-                Vec3 vec3d = new Vec3(
-                        livingEntity.getX() - this.dragon.getX(), 0.0, livingEntity.getZ() - this.dragon.getZ()).normalize();
+                Vec3 vec3d = new Vec3(livingEntity.getX() - this.dragon.getX(), 0.0, livingEntity.getZ() - this.dragon.getZ()).normalize();
                 Vec3 vec3d2 = new Vec3(
                          Mth.sin(this.dragon.getYRot() * (float) (Math.PI / 180.0)),
                         0.0,
-                         (-Mth.cos(this.dragon.getYRot() * (float) (Math.PI / 180.0)))
-                )
+                         (-Mth.cos(this.dragon.getYRot() * (float) (Math.PI / 180.0))))
                         .normalize();
                 float f = (float) vec3d2.dot(vec3d);
                 float g = (float) (Math.acos(f) * 180.0F / (float) Math.PI);
@@ -152,10 +136,8 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
                     if (i > 40.0F) {
                         i = 40.0F;
                     }
-
                     this.dragon.yRotA += (float) h * (0.05F / (i / j));
                     this.dragon.setYRot(this.dragon.getYRot() + this.dragon.yRotA);
-
                 }
             }
         }

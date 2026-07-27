@@ -1,5 +1,8 @@
 package net.greenjab.jabsfixedcombat.mixin.food;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.util.CustomData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
@@ -27,6 +30,7 @@ public abstract class FoodDataMixin {
 
     @Inject(method = "add", at = @At("HEAD"), cancellable = true)
     private void dontCapSaturation(int food, float saturation, CallbackInfo ci) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return;
         FoodData instance = (FoodData) (Object)this;
         instance.setFoodLevel(Mth.clamp(food + instance.getFoodLevel(), 0, 20));
         instance.setSaturation(Mth.clamp(instance.getSaturationLevel() + saturation, 0, 20.0f));
@@ -35,7 +39,7 @@ public abstract class FoodDataMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
     private void HungerToSaturation(ServerPlayer player, CallbackInfo ci) {
-
+        if (!JabsFixedCombat.gameRules.use_stamina) return;
         float lastExhaustion = CustomData.getData(player, "lastExhaustion")/1000.0f;
         int ticksSinceLastExhaustion = CustomData.getData(player, "ticksSinceLastExhaustion");
         float saturationSinceLastHunger = CustomData.getData(player, "saturationSinceLastHunger")/1000.0f;
@@ -85,42 +89,49 @@ public abstract class FoodDataMixin {
 
     @ModifyConstant(method = "tick", constant = @Constant(floatValue = 4.0f))
     private float lessExhastion(float value) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return value;
         return 0.5f;
     }
     @ModifyConstant(method = "tick", constant = @Constant(floatValue = 1.0f, ordinal = 0))
     private float lessStaminaCost(float value) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return value;
         return 0.5f;
     }
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 20))
     private int noQuickHeal(int value) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return value;
         return 20000;
     }
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 18))
     private int dontNeedHungerToHeal(int value) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return value;
         return 0;
     }
     @ModifyConstant(method = "tick", constant = @Constant(intValue = 80))
     private int fasterHeal(int value) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return value;
         FoodData HM = (FoodData) (Object)this;
         if (HM.getFoodLevel()==0) return 80;
         return 20;
     }
-    @Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isHurt()Z"))
-    private boolean needSaturationToHeal(ServerPlayer instance) {
+    @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;isHurt()Z"))
+    private boolean needSaturationToHeal(ServerPlayer instance, Operation<Boolean> original) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return original.call(instance);
         FoodData HM = (FoodData) (Object)this;
         if (instance.hurtTime>0) return false;
-        return instance.isHurt() && (instance.getHealth() <= instance.getMaxHealth()-1) && HM.getSaturationLevel()>3 &&
+        return original.call(instance) && (instance.getHealth() <= instance.getMaxHealth()-1) && HM.getSaturationLevel()>3 &&
                (HM.getSaturationLevel()>=HM.getFoodLevel() || instance.isShiftKeyDown());
     }
     @ModifyArg(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/food/FoodData;addExhaustion(F)V"), index = 0)
     private float healFromHunger(float value) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return value;
         return 3;
     }
 
     @Inject(method = "hasEnoughFood", at = @At("HEAD"), cancellable = true)
     private void cancelSprintAt0Saturation(CallbackInfoReturnable<Boolean> cir) {
+        if (!JabsFixedCombat.gameRules.use_stamina) return;
         FoodData HM = (FoodData) (Object)this;
         cir.setReturnValue(HM.getSaturationLevel() > 0.0F);
     }
-
 }

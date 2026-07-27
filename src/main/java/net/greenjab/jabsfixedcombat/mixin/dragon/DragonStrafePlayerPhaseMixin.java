@@ -1,5 +1,7 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,6 +56,7 @@ public abstract class DragonStrafePlayerPhaseMixin extends AbstractDragonPhaseIn
 
     @Inject(method = "doServerTick", at = @At(value = "HEAD"), cancellable = true)
     private void checkForDragonFight(CallbackInfo ci) {
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
         if (this.attackTarget == null || this.fireballCharge < -100) {
             LOGGER.warn("Skipping player strafe phase because no player was found");
             this.dragon.getPhaseManager().setPhase(EnderDragonPhase.HOLDING_PATTERN);
@@ -69,9 +72,7 @@ public abstract class DragonStrafePlayerPhaseMixin extends AbstractDragonPhaseIn
             }
 
             double d = this.targetLocation == null ? 0.0 : this.targetLocation.distanceToSqr(this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
-            if (d < 100.0 || d > 22500.0) {
-                this.findNewTarget();
-            }
+            if (d < 100.0 || d > 22500.0) this.findNewTarget();
 
             if (this.attackTarget.distanceToSqr(this.dragon) < 22500.0) {
                 if (this.dragon.hasLineOfSight(this.attackTarget)) {
@@ -81,21 +82,14 @@ public abstract class DragonStrafePlayerPhaseMixin extends AbstractDragonPhaseIn
                     Vec3 vec3d2 = new Vec3(
                             Mth.sin(this.dragon.getYRot() * (float) (Math.PI / 180.0)),
                             0.0,
-                            (-Mth.cos(this.dragon.getYRot() * (float) (Math.PI / 180.0)))
-                    )
-                            .normalize();
+                            (-Mth.cos(this.dragon.getYRot() * (float) (Math.PI / 180.0)))).normalize();
                     Vec3 vec3d3 = this.dragon.getViewVector(1.0F);
-
                     if (this.fireballCharge >= 5 ){
-
                         double dx = this.dragon.getX() - this.attackTarget.getX();
                         double dz = this.dragon.getZ() - this.attackTarget.getZ();
-
                         if (dx*dx+dz*dz < 16*16 && this.dragon.level().getDifficulty().getId()>1) {
-                            if (!this.dragon.isSilent()) {
-                                this.dragon.level()
-                                        .levelEvent(null, LevelEvent.SOUND_DRAGON_FIREBALL, this.dragon.blockPosition(), 0);
-                            }
+                            if (!this.dragon.isSilent())
+                                this.dragon.level().levelEvent(null, LevelEvent.SOUND_DRAGON_FIREBALL, this.dragon.blockPosition(), 0);
                             BlockPos b = this.dragon.getSubEntities()[5].blockPosition();
                             Endermite endermiteEntity = EntityType.ENDERMITE.create(this.dragon.level().getChunkAt(b).getLevel(), EntitySpawnReason.MOB_SUMMONED);
                             if (endermiteEntity != null) {
@@ -103,9 +97,7 @@ public abstract class DragonStrafePlayerPhaseMixin extends AbstractDragonPhaseIn
                                 endermiteEntity.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, -1));
                                 endermiteEntity.addEffect(new MobEffectInstance(MobEffects.GLOWING, -1));
                                 endermiteEntity.addEffect(new MobEffectInstance(MobEffects.RESISTANCE, 2, 4));
-                                if (!this.dragon.entityTags().contains("omen")) {
-                                    endermiteEntity.setHealth(1);
-                                }
+                                if (!this.dragon.entityTags().contains("omen")) endermiteEntity.setHealth(1);
                                 endermiteEntity.getAttribute(Attributes.KNOCKBACK_RESISTANCE).setBaseValue(30);
                                 this.dragon.level().addFreshEntity(endermiteEntity);
 
@@ -119,44 +111,35 @@ public abstract class DragonStrafePlayerPhaseMixin extends AbstractDragonPhaseIn
                                 if (this.dragon.getRandom().nextInt(10)==0) {
                                     this.dragon.getPhaseManager().setPhase(EnderDragonPhase.CHARGING_PLAYER);
                                     this.dragon.getPhaseManager().getPhase(EnderDragonPhase.CHARGING_PLAYER).setTarget(new Vec3(this.attackTarget.getX(), this.attackTarget.getY(), this.attackTarget.getZ()));
-                                } else {
-                                    this.dragon.getPhaseManager().setPhase(EnderDragonPhase.HOLDING_PATTERN);
-                                }
+                                } else this.dragon.getPhaseManager().setPhase(EnderDragonPhase.HOLDING_PATTERN);
                             }
                         } else {
                             float j = (float)vec3d2.dot(vec3d);
                             float k = (float)(Math.acos(j) * 180.0F / (float)Math.PI);
                             if (k >= -45.0F && k < 45.0F) {
-
                                 double l = this.dragon.head.getX() - vec3d3.x;
                                 double m = this.dragon.head.getY(0.5) + 0.5;
                                 double n = this.dragon.head.getZ() - vec3d3.z;
                                 double o = this.attackTarget.getX() - l;
                                 double p = this.attackTarget.getY(0.5) - m;
                                 double q = this.attackTarget.getZ() - n;
-
-                                if (!this.dragon.isSilent()) {
-                                    this.dragon.level()
-                                            .levelEvent(null, LevelEvent.SOUND_DRAGON_FIREBALL, this.dragon.blockPosition(), 0);
-                                }
+                                if (!this.dragon.isSilent())
+                                    this.dragon.level().levelEvent(null, LevelEvent.SOUND_DRAGON_FIREBALL, this.dragon.blockPosition(), 0);
                                 DragonFireball dragonFireballEntity = new DragonFireball(this.dragon.level(), this.dragon, new Vec3(o, p, q));
                                 dragonFireballEntity.snapTo(l, m, n, 0.0F, 0.0F);
                                 this.dragon.level().addFreshEntity(dragonFireballEntity);
                                 this.fireballCharge = 0;
                                 if (this.currentPath != null) {
-                                    while (!this.currentPath.isDone()) {
-                                        this.currentPath.advance();
-                                    }
+                                    while (!this.currentPath.isDone()) this.currentPath.advance();
                                 }
 
                                 if (this.dragon.getRandom().nextBoolean()||this.dragon.level().getDifficulty().getId()<2) {
                                     this.dragon.getPhaseManager().setPhase(EnderDragonPhase.HOLDING_PATTERN);
-                                }if (this.dragon.getRandom().nextInt(10)==0) {
+                                }
+                                if (this.dragon.getRandom().nextInt(10)==0) {
                                     this.dragon.getPhaseManager().setPhase(EnderDragonPhase.CHARGING_PLAYER);
                                     this.dragon.getPhaseManager().getPhase(EnderDragonPhase.CHARGING_PLAYER).setTarget(new Vec3(this.attackTarget.getX(), this.attackTarget.getY(), this.attackTarget.getZ()));
-                                } else {
-                                    this.fireballCharge=-40;
-                                }
+                                } else this.fireballCharge=-40;
                             }
                         }
 

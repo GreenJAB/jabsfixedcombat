@@ -22,8 +22,11 @@ public abstract class EnchantmentMixin {
             if (!weapon.isEmpty()) {
                 int lungeLevel = JabsFixedCombat.enchantLevel(weapon, "lunge");
                 if (lungeLevel > 0) {
-                    float stamina = PE.getFoodData().getSaturationLevel();
-                    if (stamina < lungeLevel * 2) ci.cancel();
+                    if (JabsFixedCombat.gameRules.use_stamina) {
+                        if (PE.getFoodData().getSaturationLevel() < lungeLevel * 2) ci.cancel();
+                    } else {
+                        if (PE.getFoodData().getFoodLevel() <= 6) ci.cancel();
+                    }
                 }
             }
         }

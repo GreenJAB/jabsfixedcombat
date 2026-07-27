@@ -1,7 +1,11 @@
 package net.greenjab.jabsfixedcombat.mixin.mobs;
 
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.greenjab.jabsfixedcombat.util.ArmorTrimmer;
 import net.greenjab.jabsfixedcombat.util.ModTags;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.DifficultyInstance;
@@ -39,6 +43,7 @@ public abstract class MobMixin extends LivingEntity {
 
     @Inject(method = "populateDefaultEquipmentSlots", at = @At(value = "HEAD"),cancellable = true)
     private void Armor(RandomSource random, DifficultyInstance difficulty, CallbackInfo ci) {
+        if (this.level() instanceof ServerLevel serverLevel && !serverLevel.getGameRules().get(GameRuleRegistry.STRONGER_MOBS)) return;
         int y= this.blockPosition().getY();
         boolean pale = this.level().getBiome(this.blockPosition()).is(Biomes.PALE_GARDEN);
         float f = this.level().getDifficulty() == Difficulty.HARD ? 0.175F : 0.075F;
@@ -75,28 +80,25 @@ public abstract class MobMixin extends LivingEntity {
         ci.cancel();
     }
 
-    @Redirect(method = "dropCustomDeathLoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isDamageableItem()Z"))
-    private boolean copperDurability(ItemStack instance) {
-        if (instance.is(ModTags.COPPER_ARMOR)) {
-            return false;
-        }
-        return instance.isDamageableItem();
+    @WrapOperation(method = "dropCustomDeathLoot", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/ItemStack;isDamageableItem()Z"))
+    private boolean copperDurability(ItemStack instance, Operation<Boolean> original) {
+        if (instance.is(ModTags.COPPER_ARMOR)) return false;
+        return original.call(instance);
     }
 
     @Inject(method = "finalizeSpawn", at=@At(value = "HEAD"))
     private void addStuff(ServerLevelAccessor level, DifficultyInstance difficulty, EntitySpawnReason spawnReason, SpawnGroupData groupData,
                           CallbackInfoReturnable<SpawnGroupData> cir){
+        if (!level.getLevel().getGameRules().get(GameRuleRegistry.STRONGER_MOBS)) return;
         Mob LE = (Mob)(Object)this;
         int y= LE.blockPosition().getY();
         if (LE instanceof Monster && level.dimensionType().hasSkyLight()) {
             addEffect(level, difficulty, LE, y);
             addModifiers(level, LE);
-
         }
     }
 
-    @Unique
-    private void addModifiers(ServerLevelAccessor world, Mob LE) {
+    @Unique private void addModifiers(ServerLevelAccessor world, Mob LE) {
         int i = 0;
         if (world.getDifficulty() == Difficulty.NORMAL) i = 1;
         if (world.getDifficulty() == Difficulty.HARD) i = 2;
@@ -106,24 +108,21 @@ public abstract class MobMixin extends LivingEntity {
         increaseSpeed(LE, i);
     }
 
-    @Unique
-    private static void increaseSpeed(Mob LE, int i) {
+    @Unique private static void increaseSpeed(Mob LE, int i) {
         if (LE.getAttribute(Attributes.MOVEMENT_SPEED)!=null) {
             if (!LE.isBaby()) LE.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(
                     LE.getAttributeBaseValue(Attributes.MOVEMENT_SPEED) * (1 + (i * 0.15f * gaussian())));
         }
     }
 
-    @Unique
-    private static void increaseHealth(Mob LE, float h) {
+    @Unique private static void increaseHealth(Mob LE, float h) {
         if (LE.getAttribute(Attributes.MAX_HEALTH)!=null) {
             LE.getAttribute(Attributes.MAX_HEALTH).setBaseValue(
                     LE.getAttributeBaseValue(Attributes.MAX_HEALTH) + h);
             LE.setHealth(LE.getHealth() + h);
         }
     }
-    @Unique
-    private void addEffect(ServerLevelAccessor world, DifficultyInstance localDifficulty, Mob LE, int y){
+    @Unique private void addEffect(ServerLevelAccessor world, DifficultyInstance localDifficulty, Mob LE, int y){
         if (random.nextFloat() < 0.2f * localDifficulty.getSpecialMultiplier()) {
             boolean pale = this.level().getBiome(this.blockPosition()).is(Biomes.PALE_GARDEN);
             if ((world.getBrightness(LightLayer.SKY, LE.blockPosition()) < 7 ||pale)  && !(LE instanceof Spider)) {
@@ -135,41 +134,26 @@ public abstract class MobMixin extends LivingEntity {
         }
     }
 
-    @Unique
-    private static float gaussian(){
+    @Unique private static float gaussian(){
         return (float)(Math.tan(0.87433408*Math.PI*(Math.random()-0.5f))/10.0f)+0.5f;
     }
 
-    @Unique
-    public MobEffectInstance getEffect(RandomSource random, LivingEntity LE) {
+    @Unique public MobEffectInstance getEffect(RandomSource random, LivingEntity LE) {
         int l = 6;
         if (LE instanceof Creeper) l+=5 ;
         if (LE instanceof Skeleton) l+=3;
         int i = random.nextInt(l);
-
-        if (i == 0) {
-            return new MobEffectInstance(MobEffects.SPEED, -1, 0);
-        } else if (i == 1) {
-            return new MobEffectInstance(MobEffects.STRENGTH, -1, 0);
-        } else if (i == 2) {
-            return new MobEffectInstance(MobEffects.JUMP_BOOST, -1, 1);
-        } else if (i == 3) {
-            return new MobEffectInstance(MobEffects.SLOW_FALLING, -1, 0);
-        } else if (i == 4) {
-            return new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 0);
-        } else if (i == 5) {
-            return new MobEffectInstance(MobEffects.ABSORPTION, -1, 0);
-        } else if (i == 6) {
-            return new MobEffectInstance(MobEffects.NAUSEA, -1, 0);
-        } else if (i == 7) {
-            return new MobEffectInstance(MobEffects.MINING_FATIGUE, -1, 0);
-        } else if (i == 8) {
-            return new MobEffectInstance(MobEffects.WEAKNESS, -1, 0);
-        } else if (i == 9) {
-            return new MobEffectInstance(MobEffects.REGENERATION, -1, 0);
-        } else if (i == 10) {
-            return new MobEffectInstance(MobEffects.LUCK, -1, 0);
-        }
+        if (i == 0) return new MobEffectInstance(MobEffects.SPEED, -1, 0);
+        else if (i == 1) return new MobEffectInstance(MobEffects.STRENGTH, -1, 0);
+        else if (i == 2) return new MobEffectInstance(MobEffects.JUMP_BOOST, -1, 1);
+        else if (i == 3) return new MobEffectInstance(MobEffects.SLOW_FALLING, -1, 0);
+        else if (i == 4) return new MobEffectInstance(MobEffects.FIRE_RESISTANCE, -1, 0);
+        else if (i == 5) return new MobEffectInstance(MobEffects.ABSORPTION, -1, 0);
+        else if (i == 6) return new MobEffectInstance(MobEffects.NAUSEA, -1, 0);
+        else if (i == 7) return new MobEffectInstance(MobEffects.MINING_FATIGUE, -1, 0);
+        else if (i == 8) return new MobEffectInstance(MobEffects.WEAKNESS, -1, 0);
+        else if (i == 9) return new MobEffectInstance(MobEffects.REGENERATION, -1, 0);
+        else if (i == 10) return new MobEffectInstance(MobEffects.LUCK, -1, 0);
         return new MobEffectInstance(MobEffects.ABSORPTION, -1, 0);
     }
 }

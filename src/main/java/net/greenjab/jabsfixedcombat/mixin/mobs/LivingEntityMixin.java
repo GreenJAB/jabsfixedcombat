@@ -1,5 +1,6 @@
 package net.greenjab.jabsfixedcombat.mixin.mobs;
 
+import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.greenjab.jabsfixedcombat.util.ModTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -45,6 +46,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "hurtServer",at = @At( value = "TAIL" ))
     private void exitVehicleOnDamage(ServerLevel level, DamageSource source, float damage, CallbackInfoReturnable<Boolean> cir) {
+        if (!level.getGameRules().get(GameRuleRegistry.MOBS_LEAVE_VEHICLES_WHEN_ATTACKED)) return;
         LivingEntity entity = ((LivingEntity) (Object) this);
         if (damage <= 0) return;
         if (entity.isAlwaysTicking()) return;
