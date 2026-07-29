@@ -6,6 +6,7 @@ import net.greenjab.jabsfixedcombat.network.SyncHandler;
 import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -71,5 +72,11 @@ public abstract class ServerPlayerMixin extends Entity
             if (ticks == 0) entity.setUnlimitedLifetime();
             else entity.age = 6000-ticks;
         }
+    }
+
+    @Inject(method = "swing", at = @At("TAIL"))
+    private void missCooldown(InteractionHand hand, CallbackInfo ci) {
+        ServerPlayer player = (ServerPlayer) (Object) this;
+        if (player.getLastHurtMobTimestamp() != this.tickCount) player.attackStrengthTicker = (int)(player.getCurrentItemAttackStrengthDelay()/2.0);
     }
 }

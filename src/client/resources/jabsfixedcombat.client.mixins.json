@@ -13,7 +13,8 @@
     "EnderDragonModelMixin",
     "GuiMixin",
     "LocalPlayerMixin",
-    "MinecraftMixin"
+    "MinecraftMixin",
+    "MultiPlayerGameModeMixin"
   ],
   "client": [
     "EquipmentLayerRendererMixin"

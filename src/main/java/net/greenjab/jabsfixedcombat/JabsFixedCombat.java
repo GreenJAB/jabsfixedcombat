@@ -54,13 +54,13 @@ public class JabsFixedCombat implements ModInitializer {
 			ResourceManagerHelper.registerBuiltinResourcePack(
 					JabsFixedCombat.id("tiered_crafting"),
 					modContainer,
-					Component.nullToEmpty("jabsfixedcombat.tiered_crafting"),
+					Component.translatable("jabsfixedcombat.tiered_crafting"),
 					ResourcePackActivationType.NORMAL);
 			ResourceManagerHelper.registerBuiltinResourcePack(
 					JabsFixedCombat.id("harder_eye_of_ender"),
 					modContainer,
-					Component.nullToEmpty("jabsfixedcombat.harder_eye_of_ender"),
-					ResourcePackActivationType.DEFAULT_ENABLED);
+					Component.translatable("jabsfixedcombat.harder_eye_of_ender"),
+					ResourcePackActivationType.NORMAL);
 		});
 	}
 
