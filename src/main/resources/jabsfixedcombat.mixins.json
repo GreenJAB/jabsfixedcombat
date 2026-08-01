@@ -6,6 +6,7 @@
     "ArmorMaterialMixin",
     "BlocksMixin",
     "EntityMixin",
+    "InventoryMixin",
     "KineticWeaponMixin",
     "MinecraftServerMixin",
     "PlayerMixin",

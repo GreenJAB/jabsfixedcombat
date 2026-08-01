@@ -27,6 +27,7 @@ public abstract class ItemMixin {
 
     @Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
     private void modifyFoodEatTimes(ItemStack itemStack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
+        if (!JabsFixedCombat.gameRules.eat_duration) return;
         if (itemStack.getItem().components().has(DataComponents.FOOD)) {
             cir.setReturnValue(10 + 6 * itemStack.getItem().components().get(DataComponents.FOOD).nutrition());
             if (itemStack.is(ItemTags.PIGLIN_LOVED)) cir.setReturnValue(60);

@@ -22,9 +22,11 @@ public class GameRuleRegistry {
     public static GameRule<Boolean> SPEARS_ONLY_HORIZONTAL;
 
     public static GameRule<Integer> STAMINA_DRAIN_SPEED;
+    public static GameRule<Boolean> EAT_DURATION_PROPORTIONAL_TO_FOOD;
     public static GameRule<Boolean> EAT_HIT_CANCELLING;
 
     public static GameRule<Boolean> RESPAWN_WITH_LESS_HEALTH;
+    public static GameRule<Boolean> PARTIAL_KEEP_INVENTORY;
     public static GameRule<Integer> ITEM_DEATH_DESPAWN_TIME;
 
     public static GameRule<Boolean> STRONGER_MOBS;
@@ -43,9 +45,11 @@ public class GameRuleRegistry {
         SPEARS_ONLY_HORIZONTAL = registerBoolean("spears_only_horizontal", true);
 
         STAMINA_DRAIN_SPEED = registerInteger("stamina_drain_speed", 100, 0, 1000);
+        EAT_DURATION_PROPORTIONAL_TO_FOOD = registerBoolean("eat_duration_proportional_to_food", true);
         EAT_HIT_CANCELLING = registerBoolean("eat_hit_cancelling", true);
 
         RESPAWN_WITH_LESS_HEALTH = registerBoolean("respawn_with_less_health", true);
+        PARTIAL_KEEP_INVENTORY = registerBoolean("partial_keep_inventory", false);
         ITEM_DEATH_DESPAWN_TIME = registerInteger("item_death_despawn_time", 30, 0, 30);
 
         STRONGER_MOBS = registerBoolean("stronger_mobs", true);
