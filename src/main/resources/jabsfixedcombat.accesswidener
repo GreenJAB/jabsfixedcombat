@@ -4,3 +4,4 @@ accessible class net/minecraft/world/inventory/ArmorSlot
 accessible field net/minecraft/world/entity/LivingEntity equipment Lnet/minecraft/world/entity/EntityEquipment;
 accessible field net/minecraft/world/entity/item/ItemEntity age I
 accessible field net/minecraft/world/entity/LivingEntity attackStrengthTicker I
+accessible field net/minecraft/world/entity/EntityEquipment items Ljava/util/EnumMap;

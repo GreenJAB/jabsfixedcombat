@@ -5,6 +5,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.greenjab.jabsfixedcombat.util.ModTags;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.EntityEquipment;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,5 +26,18 @@ public abstract class InventoryMixin {
         if (this.player.level() instanceof ServerLevel level && !level.getGameRules().get(GameRuleRegistry.PARTIAL_KEEP_INVENTORY)) return original.call(instance);
         if (instance.is(ModTags.PARTIAL_KEEP_INVENTORY)) return true;
         return original.call(instance);
+    }
+
+    @WrapOperation(method = "dropAll", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/EntityEquipment;dropAll(Lnet/minecraft/world/entity/LivingEntity;)V"))
+    private void noDropSpecialItemsArmour(EntityEquipment instance, LivingEntity dropper, Operation<Void> original) {
+        if (this.player.level() instanceof ServerLevel level && !level.getGameRules().get(GameRuleRegistry.PARTIAL_KEEP_INVENTORY)) original.call(instance, dropper);
+        else {
+            for (EquipmentSlot slot : instance.items.keySet()) {
+                if (!instance.get(slot).is(ModTags.PARTIAL_KEEP_INVENTORY)) {
+                    dropper.drop(instance.get(slot), true, false);
+                    instance.set(slot, ItemStack.EMPTY);
+                }
+            }
+        }
     }
 }

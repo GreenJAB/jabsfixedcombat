@@ -43,6 +43,7 @@ public class JabsFixedCombat implements ModInitializer {
 		GameRuleRegistry.registerGameRules();
 		MobEffectRegistry.registerMobEffects();
 		MenuRegistry.registerMenus();
+		LootTableAdditions.registerLootTableAdds();
 		TextureModificationRegistry.registerTextureModifications();
 
 		DispenserBlock.registerProjectileBehavior(Items.BRICK);

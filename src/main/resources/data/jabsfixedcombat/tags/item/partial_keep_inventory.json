@@ -1,6 +1,24 @@
 {
     "values": [
         "#jabsfixedcombat:unbreakable",
-        "minecraft:dragon_egg"
+        "minecraft:ancient_debris",
+        "minecraft:netherite_scrap",
+        "minecraft:netherite_ingot",
+        "minecraft:netherite_upgrade_smithing_template",
+        "minecraft:nether_star",
+        "minecraft:beacon",
+        "minecraft:ender_eye",
+        "minecraft:ender_chest",
+        "minecraft:dragon_egg",
+        "minecraft:trident",
+        "minecraft:heavy_core",
+        "minecraft:mace",
+        "jabsfixedcombat:heavy_spear",
+        "minecraft:echo_shard",
+        "minecraft:recovery_compass",
+        "jabsfixedcombat:echo_fruit",
+        "jabsfixedcombat:echo_totem",
+        "minecraft:totem_of_undying",
+        "jabsfixedcombat:broken_totem"
     ]
 }

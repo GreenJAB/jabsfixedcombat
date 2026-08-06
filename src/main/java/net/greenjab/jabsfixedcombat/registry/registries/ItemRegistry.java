@@ -3,6 +3,7 @@ package net.greenjab.jabsfixedcombat.registry.registries;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.registry.item.EchoFruitItem;
 import net.greenjab.jabsfixedcombat.registry.item.NewTotemItem;
+import net.greenjab.jabsfixedcombat.util.ModTags;
 import net.minecraft.core.Holder;
 import net.minecraft.core.Registry;
 import net.minecraft.core.component.DataComponents;
@@ -34,7 +35,7 @@ public class ItemRegistry {
             "echo_fruit", EchoFruitItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).food(Foods.CHORUS_FRUIT));
 
     public static final Item HEAVY_SPEAR = register(
-            "heavy_spear", new Item.Properties().rarity(Rarity.EPIC).spear(ToolMaterial.NETHERITE, 1.05F, 1.075F, 0.5F, 7.0F, 10.0F, 8.5F, 5.1F, 10.0F, 4.6F)
+            "heavy_spear", new Item.Properties().rarity(Rarity.EPIC).spear(ToolMaterial.NETHERITE, 1.05F, 1.075F, 0.5F, 7.0F, 10.0F, 8.5F, 5.1F, 10.0F, 4.6F).repairable(ModTags.BREEZE_ROD)
     );
     public static final Item ILLUSIONER_SPAWN_EGG = registerSpawnEgg(EntityType.ILLUSIONER);
 

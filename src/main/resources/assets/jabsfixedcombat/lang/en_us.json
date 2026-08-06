@@ -21,7 +21,7 @@
     "gamerule.jabsfixedcombat.raid_replace_evokers_with_illusioners.description": "This is to reduce ease of access to many totems",
     "gamerule.jabsfixedcombat.nerf_vanilla_spears": "Nerf vanilla Spears (less damage, no pierce)",
     "gamerule.jabsfixedcombat.spears_only_horizontal": "Spear Only Horizontal",
-    "gamerule.jabsfixedcombat.spears_only_horizonta.description": "Spear velocity attack only accounts for horizonal movement (inverse of mace)",
+    "gamerule.jabsfixedcombat.spears_only_horizontal.description": "Spear velocity attack only accounts for horizonal movement (inverse of mace)",
     "gamerule.jabsfixedcombat.stamina_drain_speed": "Stamina Drain Speed",
     "gamerule.jabsfixedcombat.stamina_drain_speed.description": "Speed at which actions drain stamina. Set to 0 to remove stamina entirely (revert to vanilla Saturation)",
     "gamerule.jabsfixedcombat.eat_hit_cancelling": "Getting Hit while Eating Resets the animation",
