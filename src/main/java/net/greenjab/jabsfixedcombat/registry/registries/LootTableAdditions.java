@@ -28,6 +28,7 @@ public class LootTableAdditions {
                         .add(enchantedArmor(enchantments, Items.DIAMOND_CHESTPLATE))
                         .add(enchantedArmor(enchantments, Items.DIAMOND_BOOTS))
                         .build());
+                tableBuilder.pool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ECHO_SHARD)).build());
             }
 	  });
     }

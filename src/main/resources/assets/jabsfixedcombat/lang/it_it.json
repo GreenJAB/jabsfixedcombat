@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "Non puoi riposare , Non sei stanco",
+    "effect.jabsfixedcombat.insomnia": "Insomnia",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Serve L’Insomnia Per Riposare",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Ben Riposato",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Riposati con Insomnia 5",
     "item.jabsfixedcombat.broken_totem": "Totem Rotto",
     "item.jabsfixedcombat.echo_totem": "Totem Della Risonanza",
     "item.jabsfixedcombat.echo_fruit": "Frutto Della Risonanza",

@@ -10,11 +10,15 @@
   },
   "mixins": [
     "AvatarRendererMixin",
+    "BeaconRendererMixin",
     "EnderDragonModelMixin",
     "GuiMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
-    "MultiPlayerGameModeMixin"
+    "MultiPlayerGameModeMixin",
+    "particle.ClientPacketListenerMixin",
+    "particle.ElderGuardianParticleMixin",
+    "particle.ElderGuardianParticleRenderStateMixin"
   ],
   "client": [
     "EquipmentLayerRendererMixin"

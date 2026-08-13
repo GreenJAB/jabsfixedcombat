@@ -2,6 +2,7 @@ package net.greenjab.jabsfixedcombat.mixin.food;
 
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,6 +23,7 @@ public abstract class EnchantmentMixin {
             if (!weapon.isEmpty()) {
                 int lungeLevel = JabsFixedCombat.enchantLevel(weapon, "lunge");
                 if (lungeLevel > 0) {
+                    if (PE.hasEffect(MobEffects.SATURATION)) return;
                     if (JabsFixedCombat.gameRules.use_stamina) {
                         if (PE.getFoodData().getSaturationLevel() < lungeLevel * 2) ci.cancel();
                     } else {

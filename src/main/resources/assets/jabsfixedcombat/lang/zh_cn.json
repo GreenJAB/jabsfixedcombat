@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "你现在无法休息，你并不疲倦",
+    "effect.jabsfixedcombat.insomnia": "失眠",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "必须有失眠效果才能入睡",
+    "advancements.adventure.sleep_with_insomnia_5.title": "安眠无忧",
+    "advancements.adventure.sleep_with_insomnia_5.description": "在失眠 V 状态下入睡",
     "item.jabsfixedcombat.broken_totem": "破碎的图腾",
     "item.jabsfixedcombat.echo_totem": "回响图腾",
     "item.jabsfixedcombat.echo_fruit": "回响果实",

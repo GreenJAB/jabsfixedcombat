@@ -1,4 +1,9 @@
 {
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Vyžadovat nespavost pro spánek",
+    "block.minecraft.bed.awake": "Nemůžete spát, nejste unaven",
+    "effect.jabsfixedcombat.insomnia": "Nespavost",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Dobře vyspaný",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Vyspi se s nespavostí 5",
     "item.jabsfixedcombat.broken_totem": "Rozbitý totem",
     "item.jabsfixedcombat.echo_totem": "Totem ozvěny",
     "item.jabsfixedcombat.echo_fruit": "Plod ozvěny",

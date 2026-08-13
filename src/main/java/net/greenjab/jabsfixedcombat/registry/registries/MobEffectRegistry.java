@@ -12,6 +12,7 @@ public class MobEffectRegistry {
 
     public static Holder<MobEffect> AWKWARD =  register("awkward", new CustomEffect(MobEffectCategory.NEUTRAL,0xA72BEC));
     public static Holder<MobEffect> REACH = register("reach", new CustomEffect(MobEffectCategory.NEUTRAL,0x98D982));
+    public static Holder<MobEffect> INSOMNIA = register("insomnia", new CustomEffect(MobEffectCategory.HARMFUL,0x98D982));
 
     private static Holder<MobEffect> register(String name, MobEffect statusEffect) {
         return Registry.registerForHolder(BuiltInRegistries.MOB_EFFECT, JabsFixedCombat.id(name), statusEffect);

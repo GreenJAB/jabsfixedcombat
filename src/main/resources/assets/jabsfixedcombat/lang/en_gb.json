@@ -1,4 +1,9 @@
 {
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Need Insomnia in order to Sleep",
+    "block.minecraft.bed.awake": "You can not sleep, You are not tired",
+    "effect.jabsfixedcombat.insomnia": "Insomnia",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Well Rested",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Sleep with Insomnia 5",
     "item.jabsfixedcombat.broken_totem": "Broken Totem",
     "item.jabsfixedcombat.echo_totem": "Echo Totem",
     "item.jabsfixedcombat.echo_fruit": "Echo Fruit",

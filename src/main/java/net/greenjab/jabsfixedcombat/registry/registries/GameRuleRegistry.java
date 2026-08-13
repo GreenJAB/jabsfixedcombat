@@ -32,8 +32,13 @@ public class GameRuleRegistry {
     public static GameRule<Boolean> STRONGER_MOBS;
     public static GameRule<Boolean> MOBS_LEAVE_VEHICLES_WHEN_ATTACKED;
 
-    public static GameRule<Boolean> BETTER_WITHER_FIGHT;
-    public static GameRule<Boolean> BETTER_DRAGON_FIGHT;
+    public static GameRule<Integer> NIGHTS_UNTIL_INSOMNIA;
+    public static GameRule<Boolean> SAFE_SLEEP_REQUIREMENT;
+    public static GameRule<Boolean> INSOMNIA_SLEEP_REQUIREMENT;
+
+    public static GameRule<Boolean> MODIFIED_WITHER_FIGHT;
+    public static GameRule<Boolean> MODIFIED_BEACON;
+    public static GameRule<Boolean> MODIFIED_DRAGON_FIGHT;
     public static GameRule<Boolean> DRAGON_WORLD_BORDER_BEFORE_KILL;
 
     public static void registerGameRules() {
@@ -55,8 +60,13 @@ public class GameRuleRegistry {
         STRONGER_MOBS = registerBoolean("stronger_mobs", true);
         MOBS_LEAVE_VEHICLES_WHEN_ATTACKED = registerBoolean("mobs_leave_vehicles_when_attacked", true);
 
-        BETTER_WITHER_FIGHT = registerBoolean("better_wither_fight", true);
-        BETTER_DRAGON_FIGHT = registerBoolean("better_dragon_fight", true);
+        NIGHTS_UNTIL_INSOMNIA = registerInteger("nights_until_insomnia", 7, 0, Integer.MAX_VALUE);
+        SAFE_SLEEP_REQUIREMENT = registerBoolean("safe_sleep_requirement", true);
+        INSOMNIA_SLEEP_REQUIREMENT = registerBoolean("insomnia_sleep_requirement", false);
+
+        MODIFIED_WITHER_FIGHT = registerBoolean("modified_wither_fight", true);
+        MODIFIED_BEACON = registerBoolean("modified_beacon", true);
+        MODIFIED_DRAGON_FIGHT = registerBoolean("modified_dragon_fight", true);
         DRAGON_WORLD_BORDER_BEFORE_KILL = registerBoolean("dragon_world_border_before_kill", true);
     }
 

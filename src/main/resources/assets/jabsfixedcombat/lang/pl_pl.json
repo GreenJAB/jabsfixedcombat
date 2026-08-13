@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "Nie możesz spać, nie jesteś zmęczony",
+    "effect.jabsfixedcombat.insomnia": "Bezsenność",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Potrzebujesz mieć bezsenność, aby spać",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Dobry Wypoczynek",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Prześpij noc z bezsennością 5",
     "item.jabsfixedcombat.broken_totem": "Zniszczony Totem",
     "item.jabsfixedcombat.echo_totem": "Totem Echo",
     "item.jabsfixedcombat.echo_fruit": "Owoc Echo",

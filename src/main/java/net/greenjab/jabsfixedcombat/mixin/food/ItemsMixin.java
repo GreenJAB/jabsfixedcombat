@@ -4,6 +4,7 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.greenjab.jabsfixedcombat.registry.item.NewBrickItem;
 import net.greenjab.jabsfixedcombat.registry.item.NewGlisteringMelonSliceItem;
+import net.greenjab.jabsfixedcombat.registry.item.NewPhantomMembraneItem;
 import net.greenjab.jabsfixedcombat.registry.item.NewTotemItem;
 import net.greenjab.jabsfixedcombat.registry.registries.ItemRegistry;
 import net.minecraft.core.component.DataComponents;
@@ -111,6 +112,12 @@ public abstract class ItemsMixin {
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;LINGERING_POTION:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item.Properties stackedLingeringPotions(Item.Properties instance, int max, Operation<Item.Properties> original) {
         return original.call(instance, 16).useCooldown(3);}
+
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
+    @At(value = "CONSTANT", args = "stringValue=phantom_membrane"), to =
+    @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;PHANTOM_MEMBRANE:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
+    private static Item edibleMembrane(String name, Operation<Item> original) {
+        return registerItem("phantom_membrane", NewPhantomMembraneItem::new, new Item.Properties().stacksTo(64).food(Foods.CHORUS_FRUIT));}
 
     @ModifyArgs(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;spear(Lnet/minecraft/world/item/ToolMaterial;FFFFFFFFF)Lnet/minecraft/world/item/Item$Properties;"))
     private static void holdSpearsOutForever(Args args) {

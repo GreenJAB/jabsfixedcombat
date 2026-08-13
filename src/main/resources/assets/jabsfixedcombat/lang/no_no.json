@@ -1,5 +1,10 @@
 {
     "jabsfixedcombat.almost_vanilla_potions": "Nesten vanlige brygg",
+    "block.minecraft.bed.awake": "Du kan ikke sove, du er ikke trøtt",
+    "effect.jabsfixedcombat.insomnia": "Søvnløshet",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Krev søvnløshet for å sove",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Vel uthvilt",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Sov med søvnløshet 5",
     "jabsfixedcombat.tiered_crafting": "Trinnvis progresjon",
     "itemgroup.jabsfixedcombat": "Fikset",
     "item.jabsfixedcombat.broken_totem": "Ødelagt totem",

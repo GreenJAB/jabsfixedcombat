@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "Vous n'êtes pas assez fatigué pour dormir",
+    "effect.jabsfixedcombat.insomnia": "Insomnie",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Dormir nécessite l'insomnie",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Bien dormi",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Dormez avec Insomnie 5.",
     "item.jabsfixedcombat.broken_totem": "Totem brisé",
     "item.jabsfixedcombat.echo_totem": "Totem d'écho",
     "item.jabsfixedcombat.echo_fruit": "Fruit d'écho",

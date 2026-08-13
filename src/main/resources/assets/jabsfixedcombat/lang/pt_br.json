@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "Você não pode dormir, não está cansado",
+    "effect.jabsfixedcombat.insomnia": "Insônia",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Necessário estar com Insônia para dormir",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Bem Descansado",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Durma com Insônia 5",
     "item.jabsfixedcombat.broken_totem": "Totem Quebrado",
     "item.jabsfixedcombat.echo_totem": "Totem do Eco",
     "item.jabsfixedcombat.echo_fruit": "Fruta do Eco",

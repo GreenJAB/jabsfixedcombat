@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "אתתה לא יכול לישון, אתה לא עייף",
+    "effect.jabsfixedcombat.insomnia": "נידנודי שינה",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "צריך נידנודי שינה כדי לשיון",
+    "advancements.adventure.sleep_with_insomnia_5.title": "נח היטב",
+    "advancements.adventure.sleep_with_insomnia_5.description": "לישון עם נדודי שינה 5",
     "item.jabsfixedcombat.broken_totem": "טוטם שבור",
     "item.jabsfixedcombat.echo_totem": "טוטם מהדהד",
     "item.jabsfixedcombat.echo_fruit": "פרי מהדהד",

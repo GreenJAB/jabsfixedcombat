@@ -1,4 +1,9 @@
 {
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Benötigt Schlaflosigkeit, um zu schlafen",
+    "block.minecraft.bed.awake": "Du kannst nicht schlafen, du bist noch nicht müde genug",
+    "effect.jabsfixedcombat.insomnia": "Schlaflosigkeit",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Gut geschlafen",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Schlafen mit Schlaflosigkeit 5",
     "item.jabsfixedcombat.broken_totem": "Zerbrochenes Totem",
     "item.jabsfixedcombat.echo_totem": "Echeo Totem",
     "item.jabsfixedcombat.echo_fruit": "Echeo Frucht",

@@ -23,7 +23,7 @@ public abstract class DragonHoldingPatternPhaseMixin extends AbstractDragonPhase
 
     @ModifyConstant(method = "findNewTarget", constant = @Constant(intValue = 2))
     private int moreAttacks(int constant, @Local int crystals){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return constant;
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return constant;
         return 1 - crystals + (6 - 2 * this.dragon.level().getDifficulty().getId());
     }
 
@@ -34,7 +34,7 @@ public abstract class DragonHoldingPatternPhaseMixin extends AbstractDragonPhase
 
     @Inject(method = "strafePlayer", at = @At(value = "HEAD"), cancellable = true)
     private void chargeAtPlayer(CallbackInfo ci, @Local(argsOnly = true) Player playerNearestToEgg) {
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.BETTER_DRAGON_FIGHT)) return;
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
         if (playerNearestToEgg.position().distanceToSqr(new Vec3(0, 0, 0)) > 150 * 150) {
             ci.cancel();
         } else {

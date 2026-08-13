@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "Вы недостаточно устали, чтобы спать",
+    "effect.jabsfixedcombat.insomnia": "Бессонница",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "Бессонница необходима для сна",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Заряд бодрости",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Поспите с эффектом Бессонница 5",
     "item.jabsfixedcombat.broken_totem": "Сломаный тотем",
     "item.jabsfixedcombat.echo_totem": "Тотем эха",
     "item.jabsfixedcombat.echo_fruit": "Фрукт эха",

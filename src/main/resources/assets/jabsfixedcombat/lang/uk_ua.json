@@ -1,4 +1,9 @@
 {
+    "block.minecraft.bed.awake": "Ви не можете заснути, ви ще бадьорі",
+    "effect.jabsfixedcombat.insomnia": "Безсоння",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "У вас має бути безсоння, щоб заснути",
+    "advancements.adventure.sleep_with_insomnia_5.title": "Переповнений силою",
+    "advancements.adventure.sleep_with_insomnia_5.description": "Проспіть ніч з Безсонням 5",
     "item.jabsfixedcombat.broken_totem": "Використаний Тотем",
     "item.jabsfixedcombat.echo_totem": "Ехо Тотем",
     "item.jabsfixedcombat.echo_fruit": "Ехо Фрукт",

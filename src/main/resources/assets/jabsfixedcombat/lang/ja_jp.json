@@ -1,5 +1,10 @@
 {
     "jabsfixedcombat.almost_vanilla_potions": "Almost Vanilla Potions",
+    "block.minecraft.bed.awake": "疲れているときのみ寝ることができます",
+    "effect.jabsfixedcombat.insomnia": "不眠症",
+    "gamerule.jabsfixedcombat.insomnia_sleep_requirement": "眠るために不眠症の状態が必要",
+    "advancements.adventure.sleep_with_insomnia_5.title": "十分な休息",
+    "advancements.adventure.sleep_with_insomnia_5.description": "不眠症Vの状態で眠りにつく",
     "jabsfixedcombat.tiered_crafting": "Tiered Crafting",
     "itemgroup.jabsfixedcombat": "Fixed",
     "item.jabsfixedcombat.broken_totem": "壊れた不死のトーテム",
