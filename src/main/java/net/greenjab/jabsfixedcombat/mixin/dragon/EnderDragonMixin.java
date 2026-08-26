@@ -1,6 +1,8 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
@@ -138,11 +140,11 @@ public abstract class EnderDragonMixin {
         EDE.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health[EDE.level().getDifficulty().getId()]);
     }
 
-    @Inject(method = "hurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "HEAD"), cancellable = true)
-    private void ignoreExplosions(ServerLevel level, EnderDragonPart part, DamageSource source, float damage,
-                                  CallbackInfoReturnable<Boolean> cir) {
-        if (!level.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
-        if(source.getEntity() instanceof EnderDragon)cir.setReturnValue(false);
+    @ModifyArg(method = "hurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/phases/DragonPhaseInstance;onHurt(Lnet/minecraft/world/damagesource/DamageSource;F)F"), index = 1)
+    private float ignoreExplosions(float damage, @Local(argsOnly = true) ServerLevel level, @Local(argsOnly = true) DamageSource source) {
+        if (!level.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return damage;
+        if(source.getEntity() instanceof EnderDragon) return 0;
+        return damage/2f;
     }
 
     @Inject(method = "hurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "HEAD"))
@@ -163,19 +165,19 @@ public abstract class EnderDragonMixin {
         }
     }
 
-    @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 500))
-    private int moreOmenXP(int constant){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return constant;
+    @WrapOperation(method = "tickDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;hasPreviouslyKilledDragon()Z"))
+    private boolean moreOmenXP(EnderDragonFight instance, Operation<Boolean> original){
+        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return original.call(instance);
         EnderDragon EDE = (EnderDragon) (Object)this;
-        if (EDE.entityTags().contains("omen"))  return constant*3;
-        return constant;
+        if (EDE.entityTags().contains("omen"))  return false;
+        return original.call(instance);
     }
 
     @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 12000))
     private int lessNormalXP(int constant){
         if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return constant;
         EnderDragon EDE = (EnderDragon) (Object)this;
-        if (EDE.entityTags().contains("omen"))  return 8000*3;
+        if (EDE.entityTags().contains("omen"))  return 12000;
         return 8000;
     }
 }

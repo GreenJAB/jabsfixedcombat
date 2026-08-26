@@ -3,6 +3,7 @@
   "package": "net.greenjab.jabsfixedcombat.mixin",
   "compatibilityLevel": "JAVA_25",
   "mixins": [
+    "AbstractBoatMixin",
     "ArmorMaterialMixin",
     "BlocksMixin",
     "EntityMixin",

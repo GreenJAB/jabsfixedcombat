@@ -45,6 +45,7 @@ public class JabsFixedCombat implements ModInitializer {
 		MenuRegistry.registerMenus();
 		LootTableAdditions.registerLootTableAdds();
 		TextureModificationRegistry.registerTextureModifications();
+		BiomeAdditions.registerBiomeAdds();
 
 		DispenserBlock.registerProjectileBehavior(Items.BRICK);
 		DispenserBlock.registerProjectileBehavior(Items.NETHER_BRICK);

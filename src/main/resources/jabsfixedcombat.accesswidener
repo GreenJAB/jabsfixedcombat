@@ -9,3 +9,4 @@ accessible class net/minecraft/client/particle/ElderGuardianParticleGroup$ElderG
 accessible field net/minecraft/client/particle/Particle y D
 accessible class net/minecraft/server/level/ServerPlayer$RespawnPosAngle
 accessible method net/minecraft/world/level/NaturalSpawner$SpawnState canSpawnForCategoryLocal (Lnet/minecraft/world/entity/MobCategory;Lnet/minecraft/world/level/ChunkPos;)Z
+accessible field net/minecraft/world/level/storage/loot/BuiltInLootTables LOCATIONS Ljava/util/Set;
