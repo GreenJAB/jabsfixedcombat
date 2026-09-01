@@ -41,6 +41,7 @@ public class JabsFixedCombat implements ModInitializer {
 		ItemRegistry.registerItems();
 		ItemGroupRegistry.register();
 		GameRuleRegistry.registerGameRules();
+		LootTableRegistry.registerLootTable();
 		MobEffectRegistry.registerMobEffects();
 		MenuRegistry.registerMenus();
 		LootTableAdditions.registerLootTableAdds();

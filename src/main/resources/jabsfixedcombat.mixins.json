@@ -66,6 +66,7 @@
     "mobs.LivingEntityMixin",
     "mobs.MobMixin",
     "mobs.PiglinMixin",
+    "mobs.TargetGoalMixin",
     "mobs.WitherBossMixin",
     "mobs.ZombieMixin",
     "netherite.ArmorSlotMixin",

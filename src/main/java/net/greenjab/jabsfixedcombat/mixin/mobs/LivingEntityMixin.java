@@ -9,17 +9,16 @@ import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.LightLayer;
 import net.minecraft.world.level.block.LevelEvent;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -90,10 +89,38 @@ public abstract class LivingEntityMixin {
         }
     }
 
-    @ModifyConstant(method = "getVisibilityPercent", constant = @Constant(doubleValue = 0.8))
-    private double moreSneaky(double constant){
+    @Inject(method = "getVisibilityPercent", at = @At(value = "HEAD"), cancellable = true)
+    private void moreSneaky(Entity targetingEntity, CallbackInfoReturnable<Double> cir){
         LivingEntity LE = (LivingEntity) (Object)this;
-        if (LE instanceof Monster) return 0.2;
-        return constant;
+        double visibilityPercent = 1.0;
+        if (LE.isDiscrete()) visibilityPercent *= 0.25;
+
+        if (LE.isInvisible()) {
+            float coverPercentage = LE.getArmorCoverPercentage();
+            if (coverPercentage < 0.1F) coverPercentage = 0.1F;
+            visibilityPercent *= 0.7 * coverPercentage;
+        }
+
+        if (targetingEntity != null) {
+            ItemStack itemStack = LE.getItemBySlot(EquipmentSlot.HEAD);
+            if (itemStack.is(Items.ZOMBIE_HEAD)) {
+                if (targetingEntity.is(EntityType.ZOMBIE) || targetingEntity.is(EntityType.DROWNED) ||
+                        targetingEntity.is(EntityType.HUSK)) visibilityPercent *= 0.25;
+            } else if (itemStack.is(Items.SKELETON_SKULL)) {
+                if (targetingEntity.is(EntityType.SKELETON) || targetingEntity.is(EntityType.STRAY) ||
+                        targetingEntity.is(EntityType.BOGGED) ||targetingEntity.is(EntityType.PARCHED)) visibilityPercent *= 0.25;
+            } else if (itemStack.is(Items.PIGLIN_HEAD)) {
+                if (targetingEntity.is(EntityType.PIGLIN) || targetingEntity.is(EntityType.PIGLIN_BRUTE)) visibilityPercent *= 0.25;
+            } else if (itemStack.is(Items.CREEPER_HEAD)) {
+                if (targetingEntity.is(EntityType.CREEPER)) visibilityPercent *= 0.25;
+            } else if (itemStack.is(Items.WITHER_SKELETON_SKULL)) {
+                if (targetingEntity.is(EntityType.WITHER_SKELETON)) visibilityPercent *= 0.25;
+            }
+        }
+
+        int light = Math.max(LE.level().getBrightness(LightLayer.SKY, LE.blockPosition()), LE.level().getBrightness(LightLayer.BLOCK, LE.blockPosition()));
+        visibilityPercent*=(1-2*(15-light));
+
+        cir.setReturnValue(visibilityPercent);
     }
 }
