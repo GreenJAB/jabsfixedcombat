@@ -1,7 +1,7 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -40,7 +40,7 @@ public abstract class DragonChargePlayerPhaseMixin extends AbstractDragonPhaseIn
 
     @Inject(method = "doServerTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/phys/Vec3;distanceToSqr(DDD)D"))
     private void chaseElytraPlayer(CallbackInfo ci, @Local(argsOnly = true) ServerLevel level){
-        if (!level.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return;
         boolean ischasing = false;
         Player playerEntity = level.getNearestPlayer(TargetingConditions.forCombat().ignoreLineOfSight(), this.dragon, this.dragon.getX(), this.dragon.getY(), this.dragon.getZ());
         if (playerEntity != null) {

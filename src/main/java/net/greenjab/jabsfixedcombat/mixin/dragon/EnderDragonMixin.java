@@ -5,7 +5,6 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,26 +53,26 @@ public abstract class EnderDragonMixin {
 
     @ModifyConstant(method = "aiStep", constant = @Constant(doubleValue = 0.01, ordinal = 0))
     private double fasterYMovement(double constant){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return constant;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return constant;
         return 0.05;
     }
 
     @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Ljava/lang/Math;sqrt(D)D"))
     private double fasterYMovement2(double a){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return a;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return a;
         return a * 0.3;
     }
 
     @ModifyConstant(method = "aiStep", constant = @Constant(floatValue = 0.06f))
     private float fasterXZMovement(float value){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return value;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return value;
         if (((EnderDragon) (Object)this).entityTags().contains("omen")) return 0.08f;
         return value;
     }
 
     @ModifyExpressionValue(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/phases/DragonPhaseInstance;getTurnSpeed()F"))
     private float fasterRotating(float original) {
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return original;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return original;
         if (((EnderDragon) (Object)this).entityTags().contains("omen")) return original * 1.5f;
         return original;
     }
@@ -107,7 +106,7 @@ public abstract class EnderDragonMixin {
 
     @Inject(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;knockBack(Lnet/minecraft/server/level/ServerLevel;Ljava/util/List;)V", ordinal = 0))
     private void launchWhileSitting(CallbackInfo ci, @Local ServerLevel serverLevel){
-        if (!serverLevel.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return;
         if (this.phaseManager.getCurrentPhase().isSitting()) {
             EnderDragon EDE = (EnderDragon) (Object)this;
             launchLivingEntities2(serverLevel, serverLevel.getEntities(EDE, this.body.getBoundingBox().inflate(1.0, 5.0, 1.0)
@@ -134,7 +133,7 @@ public abstract class EnderDragonMixin {
 
     @Inject(method = "<init>", at= @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;<init>(Lnet/minecraft/world/entity/boss/enderdragon/EnderDragon;Ljava/lang/String;FF)V", ordinal = 0))
     private void moreHealth(EntityType<? extends EnderDragon> type, Level level, CallbackInfo ci){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return;
         EnderDragon EDE = (EnderDragon) (Object)this;
         int[] health = {150, 200, 300, 400};
         EDE.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health[EDE.level().getDifficulty().getId()]);
@@ -142,7 +141,7 @@ public abstract class EnderDragonMixin {
 
     @ModifyArg(method = "hurt(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/boss/enderdragon/EnderDragonPart;Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/boss/enderdragon/phases/DragonPhaseInstance;onHurt(Lnet/minecraft/world/damagesource/DamageSource;F)F"), index = 1)
     private float ignoreExplosions(float damage, @Local(argsOnly = true) ServerLevel level, @Local(argsOnly = true) DamageSource source) {
-        if (!level.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return damage;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return damage;
         if(source.getEntity() instanceof EnderDragon) return 0;
         return damage/2f;
     }
@@ -156,7 +155,7 @@ public abstract class EnderDragonMixin {
 
     @Inject(method = "checkWalls", at = @At(value = "HEAD"), cancellable = true)
     private void dontBreakBlocksAfterFirst(ServerLevel level, AABB bb, CallbackInfoReturnable<Boolean> cir){
-        if (!level.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return;
         EnderDragon EDE = (EnderDragon) (Object)this;
         if (this.dragonFight == null) return;
         if (this.dragonFight.hasPreviouslyKilledDragon() && !EDE.entityTags().contains("omen")) {
@@ -167,7 +166,7 @@ public abstract class EnderDragonMixin {
 
     @WrapOperation(method = "tickDeath", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/dimension/end/EnderDragonFight;hasPreviouslyKilledDragon()Z"))
     private boolean moreOmenXP(EnderDragonFight instance, Operation<Boolean> original){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return original.call(instance);
+        if (!JabsFixedCombat.gameRules.modified_dragon) return original.call(instance);
         EnderDragon EDE = (EnderDragon) (Object)this;
         if (EDE.entityTags().contains("omen"))  return false;
         return original.call(instance);
@@ -175,7 +174,7 @@ public abstract class EnderDragonMixin {
 
     @ModifyConstant(method = "tickDeath", constant = @Constant(intValue = 12000))
     private int lessNormalXP(int constant){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return constant;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return constant;
         EnderDragon EDE = (EnderDragon) (Object)this;
         if (EDE.entityTags().contains("omen"))  return 12000;
         return 8000;

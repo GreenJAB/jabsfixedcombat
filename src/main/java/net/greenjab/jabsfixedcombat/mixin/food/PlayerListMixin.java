@@ -2,7 +2,6 @@ package net.greenjab.jabsfixedcombat.mixin.food;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.network.SyncHandler;
 import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.network.Connection;
@@ -24,7 +23,7 @@ public abstract class PlayerListMixin
     }
     @WrapOperation(method = "respawn", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/level/ServerPlayer;getHealth()F"))
     private float dontSpawnAtMaxHealth(ServerPlayer instance, Operation<Float> original){
-        if (!JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.RESPAWN_WITH_LESS_HEALTH)) return original.call(instance);
+        if (!instance.level().getGameRules().get(GameRuleRegistry.RESPAWN_WITH_LESS_HEALTH)) return original.call(instance);
         float multiplier = 1f;
         if (instance.level().getDifficulty() == Difficulty.NORMAL)multiplier=0.5f;
         if (instance.level().getDifficulty() == Difficulty.HARD)multiplier=0.3f;

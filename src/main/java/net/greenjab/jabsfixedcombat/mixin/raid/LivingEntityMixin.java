@@ -2,7 +2,7 @@ package net.greenjab.jabsfixedcombat.mixin.raid;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.registry.registries.ItemRegistry;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -33,7 +33,7 @@ public abstract class LivingEntityMixin  {
     @ModifyExpressionValue(method = "checkTotemDeathProtection", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemInHand(Lnet/minecraft/world/InteractionHand;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack requireUsingTotem(ItemStack original) {
         LivingEntity LE = (LivingEntity)(Object)this;
-        if (!((ServerLevel)LE.level()).getGameRules().get(GameRuleRegistry.REQUIRE_TOTEM_USE) || LE.isUsingItem()) {
+        if (!JabsFixedCombat.gameRules.use_totem || LE.isUsingItem()) {
             return original;
         } else {
             return new ItemStack(Items.AIR);

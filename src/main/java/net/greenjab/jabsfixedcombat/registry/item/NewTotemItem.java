@@ -1,7 +1,6 @@
 package net.greenjab.jabsfixedcombat.registry.item;
 
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
-import net.minecraft.server.level.ServerLevel;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -29,7 +28,7 @@ public class NewTotemItem extends Item {
     }
     @Override
     public @NonNull InteractionResult use(@NonNull Level level, @NonNull Player user, @NonNull InteractionHand hand)  {
-        if (level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRuleRegistry.REQUIRE_TOTEM_USE)) {
+        if (JabsFixedCombat.gameRules.use_totem) {
             user.playSound(SoundEvents.SPYGLASS_USE, 1.0f, 1.0f);
             return ItemUtils.startUsingInstantly(level, user, hand);
         }

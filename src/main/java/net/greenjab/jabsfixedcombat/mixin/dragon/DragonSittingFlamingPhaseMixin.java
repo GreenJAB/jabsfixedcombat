@@ -1,7 +1,7 @@
 package net.greenjab.jabsfixedcombat.mixin.dragon;
 
 import com.llamalad7.mixinextras.sugar.Local;
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
+import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.PowerParticleOption;
@@ -45,7 +45,7 @@ public abstract class DragonSittingFlamingPhaseMixin extends AbstractDragonSitti
 
     @Inject(method = "doServerTick", at = @At("HEAD"),cancellable = true)
     private void redoTick(CallbackInfo ci, @Local(argsOnly = true) ServerLevel level) {
-        if (!level.getGameRules().get(GameRuleRegistry.MODIFIED_DRAGON_FIGHT)) return;
+        if (!JabsFixedCombat.gameRules.modified_dragon) return;
         this.flameTicks++;
 
         TargetingConditions CLOSE_PLAYER_PREDICATE;

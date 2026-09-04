@@ -3,7 +3,6 @@ package net.greenjab.jabsfixedcombat.mixin.food;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.registry.item.NewTotemItem;
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.server.level.ServerLevel;
@@ -80,7 +79,7 @@ public abstract class ItemMixin {
             else if (off.getItem() instanceof ProjectileWeaponItem || (off.getItem() instanceof FireworkRocketItem && player.isFallFlying())
                     || off.getItem() instanceof WindChargeItem || off.getItem() instanceof ThrowablePotionItem
                     || off.getItem() instanceof TridentItem || off.getItem() instanceof FishingRodItem) cir.setReturnValue(InteractionResult.PASS);
-            else if (off.getItem() instanceof NewTotemItem && JabsFixedCombat.SERVER.getGameRules().get(GameRuleRegistry.REQUIRE_TOTEM_USE)) cir.setReturnValue(InteractionResult.PASS);
+            else if (off.getItem() instanceof NewTotemItem && JabsFixedCombat.gameRules.use_totem) cir.setReturnValue(InteractionResult.PASS);
 
         }
     }
