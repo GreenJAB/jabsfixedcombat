@@ -12,7 +12,7 @@
     "AvatarRendererMixin",
     "BeaconRendererMixin",
     "EnderDragonModelMixin",
-    "GuiMixin",
+    "HudMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
     "MultiPlayerGameModeMixin",

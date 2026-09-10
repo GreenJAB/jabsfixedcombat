@@ -14,6 +14,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.alchemy.Potion;
@@ -37,7 +38,7 @@ public class ItemRegistry {
     public static final Item HEAVY_SPEAR = register(
             "heavy_spear", new Item.Properties().rarity(Rarity.EPIC).spear(ToolMaterial.NETHERITE, 1.05F, 1.075F, 0.5F, 7.0F, 10.0F, 8.5F, 5.1F, 10.0F, 4.6F).repairable(ModTags.BREEZE_ROD)
     );
-    public static final Item ILLUSIONER_SPAWN_EGG = registerSpawnEgg(EntityType.ILLUSIONER);
+    public static final Item ILLUSIONER_SPAWN_EGG = registerSpawnEgg(EntityTypes.ILLUSIONER);
 
 
     public static final Consumable GLOW_BERRIES_EFFECT = food().onConsume(new ApplyStatusEffectsConsumeEffect(

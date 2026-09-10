@@ -5,7 +5,7 @@ import com.llamalad7.mixinextras.sugar.Local;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.greenjab.jabsfixedcombat.registry.registries.ItemRegistry;
-import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.triggers.CriteriaTriggers;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityEvent;
 import net.minecraft.world.entity.EquipmentSlot;

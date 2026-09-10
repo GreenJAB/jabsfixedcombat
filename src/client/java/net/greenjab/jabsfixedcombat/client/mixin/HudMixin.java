@@ -1,8 +1,8 @@
 package net.greenjab.jabsfixedcombat.client.mixin;
 
 import net.greenjab.jabsfixedcombat.hud.HUDOverlayHandler;
-import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
+import net.minecraft.client.gui.Hud;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -13,8 +13,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.Slice;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(Gui.class)
-public abstract class GuiMixin {
+@Mixin(Hud.class)
+public abstract class HudMixin {
 
     @Inject(slice = @Slice(from = @At(value = "CONSTANT", args = "stringValue=food")),
              at = @At(value = "net.greenjab.jabsfixedcombat.mixin.BeforeInc", args = "intValue=-10", ordinal = 0),

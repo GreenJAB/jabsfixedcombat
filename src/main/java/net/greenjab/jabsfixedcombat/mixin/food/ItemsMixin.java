@@ -8,6 +8,7 @@ import net.greenjab.jabsfixedcombat.registry.item.NewPhantomMembraneItem;
 import net.greenjab.jabsfixedcombat.registry.item.NewTotemItem;
 import net.greenjab.jabsfixedcombat.registry.registries.ItemRegistry;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.food.Foods;
@@ -28,96 +29,97 @@ import java.util.function.Function;
 @Mixin(Items.class)
 public abstract class ItemsMixin {
 
-    @Shadow private static Item registerItem(String name, Function<Item.Properties, Item> itemFactory, Item.Properties properties) {
-        throw new UnsupportedOperationException("Implemented via mixin");
-    }
-    @Shadow private static Item registerItem(String name, Item.Properties properties) {
+    @Shadow private static Item registerItem(ResourceKey<Item> id, Function<Item.Properties, Item> itemFactory, Item.Properties properties) {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
 
-    @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;"), slice = @Slice( from =
-    @At(value = "CONSTANT", args = "stringValue=brick"), to =
+    @Shadow private static Item registerItem(ResourceKey<Item> id, Item.Properties properties) {
+        throw new UnsupportedOperationException("Implemented via mixin");
+    }
+
+    @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;"), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;BRICK:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item throwableBrick(String name, Operation<Item> original) {
-        return registerItem("brick", NewBrickItem::new, new Item.Properties().useCooldown(1));}
+    private static Item throwableBrick(ResourceKey<Item> id, Operation<Item> original) {
+        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1));}
 
-    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=nether_brick"), to =
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;NETHER_BRICK:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;NETHER_BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item throwableNetherBrick(String name, Operation<Item> original) {
-        return registerItem("nether_brick", NewBrickItem::new, new Item.Properties().useCooldown(1));}
+    private static Item throwableNetherBrick(ResourceKey<Item> id, Operation<Item> original) {
+        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1));}
 
-    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=resin_brick"), to =
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;RESIN_BRICK:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;RESIN_BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item throwableResinBrick(String name, Item.Properties properties, Operation<Item> original) {
-        return registerItem("resin_brick", NewBrickItem::new, new Item.Properties().useCooldown(1).trimMaterial(TrimMaterials.RESIN));}
+    private static Item throwableResinBrick(ResourceKey<Item> id, Item.Properties properties, Operation<Item> original) {
+        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1).trimMaterial(TrimMaterials.RESIN));}
 
-    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=totem_of_undying"), to =
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;TOTEM_OF_UNDYING:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;TOTEM_OF_UNDYING:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item useableTotem(String name, Item.Properties properties, Operation<Item> original) {
-        return registerItem("totem_of_undying", NewTotemItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING));}
+    private static Item useableTotem(ResourceKey<Item> id, Item.Properties properties, Operation<Item> original) {
+        return registerItem(id, NewTotemItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING));}
 
-    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=glistering_melon_slice"), to =
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;PHANTOM_MEMBRANE:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
+    @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;PHANTOM_MEMBRANE:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
+    private static Item edibleMembrane(ResourceKey<Item> id, Operation<Item> original) {
+        return registerItem(id, NewPhantomMembraneItem::new, new Item.Properties().stacksTo(64).food(Foods.CHORUS_FRUIT));}
+
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;GLISTERING_MELON_SLICE:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;GLISTERING_MELON_SLICE:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item edibleGoldMelon(String name, Operation<Item> original) {
-        return registerItem("glistering_melon_slice", NewGlisteringMelonSliceItem::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.8F).build()));}
+    private static Item edibleGoldMelon(ResourceKey<Item> id, Operation<Item> original) {
+        return registerItem(id, NewGlisteringMelonSliceItem::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(4).saturationModifier(0.8F).build()));}
 
     @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;food(Lnet/minecraft/world/food/FoodProperties;)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=glow_berries"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/BlockItemIds;GLOW_BERRY_CROP:Lnet/minecraft/references/BlockItemId;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;GLOW_BERRIES:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item.Properties glowingGlowBerries(Item.Properties instance, FoodProperties foodProperties, Operation<Item.Properties> original) {
+    private static Item.Properties glowingGlowBerries(Item.Properties instance, FoodProperties foodProperties,Operation<Item.Properties> original) {
         return instance.food(Foods.GLOW_BERRIES, ItemRegistry.GLOW_BERRIES_EFFECT);}
 
     @ModifyArg(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=rabbit_stew"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;RABBIT_STEW:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;RABBIT_STEW:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static int stackedRabbitStew(int max) {
         return 16;}
 
     @ModifyArg(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=beetroot_soup"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;BEETROOT_SOUP:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;BEETROOT_SOUP:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static int stackedBeetrootSoup(int max) {
         return 16;}
 
     @ModifyArg(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=mushroom_stew"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;MUSHROOM_STEW:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;MUSHROOM_STEW:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static int stackedMushroomStew(int max) {
         return 16;}
 
     @ModifyArg(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=suspicious_stew"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;SUSPICIOUS_STEW:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;SUSPICIOUS_STEW:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static int stackedSuspiciousSoup(int max) {
         return 16;}
 
     @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=potion"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;POTION:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;POTION:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item.Properties stackedPotions(Item.Properties instance, int max, Operation<Item.Properties> original) {
         return original.call(instance, 16);}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=splash_potion"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;SPLASH_POTION:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;SPLASH_POTION:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item.Properties stackedSplashPotions(Item.Properties instance, int max, Operation<Item.Properties> original) {
         return original.call(instance, 16).useCooldown(3);}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;stacksTo(I)Lnet/minecraft/world/item/Item$Properties;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=lingering_potion"), to =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;LINGERING_POTION:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;LINGERING_POTION:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item.Properties stackedLingeringPotions(Item.Properties instance, int max, Operation<Item.Properties> original) {
         return original.call(instance, 16).useCooldown(3);}
-
-    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=phantom_membrane"), to =
-    @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;PHANTOM_MEMBRANE:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item edibleMembrane(String name, Operation<Item> original) {
-        return registerItem("phantom_membrane", NewPhantomMembraneItem::new, new Item.Properties().stacksTo(64).food(Foods.CHORUS_FRUIT));}
 
     @ModifyArgs(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Item$Properties;spear(Lnet/minecraft/world/item/ToolMaterial;FFFFFFFFF)Lnet/minecraft/world/item/Item$Properties;"))
     private static void holdSpearsOutForever(Args args) {
@@ -130,9 +132,9 @@ public abstract class ItemsMixin {
     private static Item.Properties blastProofNetherite(Item.Properties instance, Operation<Item.Properties> original) {
         return original.call(instance).delayedComponent(DataComponents.DAMAGE_RESISTANT, (context) -> new DamageResistant(context.getOrThrow(DamageTypeTags.IS_EXPLOSION)));}
 
-    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
-    @At(value = "CONSTANT", args = "stringValue=blaze_rod"), to =
+    @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
+    @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;BLAZE_ROD:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;BLAZE_ROD:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
-    private static Item fireProofBlazeRod(String name, Operation<Item> original) {
-        return registerItem(name, new Item.Properties().fireResistant());}
+    private static Item fireProofBlazeRod(ResourceKey<Item> id, Operation<Item> original) {
+        return registerItem(id, new Item.Properties().fireResistant());}
 }

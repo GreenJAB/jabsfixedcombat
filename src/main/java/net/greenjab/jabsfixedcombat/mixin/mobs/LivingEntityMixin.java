@@ -68,7 +68,7 @@ public abstract class LivingEntityMixin {
                     this.dropAllDeathLoot(world, source);
 
                     Vex VE = AE.convertTo(
-                            EntityType.VEX, ConversionParams.single(AE, true, true), /* method_63655 */ vex -> {
+                            EntityTypes.VEX, ConversionParams.single(AE, true, true), /* method_63655 */ vex -> {
                                 vex.finalizeSpawn(world, world.getCurrentDifficultyAt(vex.blockPosition()), EntitySpawnReason.CONVERSION, null);
                                 world.levelEvent(null, LevelEvent.SOUND_SKELETON_TO_STRAY, this.lastPos, 0);
                             }
@@ -104,17 +104,17 @@ public abstract class LivingEntityMixin {
         if (targetingEntity != null) {
             ItemStack itemStack = LE.getItemBySlot(EquipmentSlot.HEAD);
             if (itemStack.is(Items.ZOMBIE_HEAD)) {
-                if (targetingEntity.is(EntityType.ZOMBIE) || targetingEntity.is(EntityType.DROWNED) ||
-                        targetingEntity.is(EntityType.HUSK)) visibilityPercent *= 0.25;
+                if (targetingEntity.is(EntityTypes.ZOMBIE) || targetingEntity.is(EntityTypes.DROWNED) ||
+                        targetingEntity.is(EntityTypes.HUSK)) visibilityPercent *= 0.25;
             } else if (itemStack.is(Items.SKELETON_SKULL)) {
-                if (targetingEntity.is(EntityType.SKELETON) || targetingEntity.is(EntityType.STRAY) ||
-                        targetingEntity.is(EntityType.BOGGED) ||targetingEntity.is(EntityType.PARCHED)) visibilityPercent *= 0.25;
+                if (targetingEntity.is(EntityTypes.SKELETON) || targetingEntity.is(EntityTypes.STRAY) ||
+                        targetingEntity.is(EntityTypes.BOGGED) ||targetingEntity.is(EntityTypes.PARCHED)) visibilityPercent *= 0.25;
             } else if (itemStack.is(Items.PIGLIN_HEAD)) {
-                if (targetingEntity.is(EntityType.PIGLIN) || targetingEntity.is(EntityType.PIGLIN_BRUTE)) visibilityPercent *= 0.25;
+                if (targetingEntity.is(EntityTypes.PIGLIN) || targetingEntity.is(EntityTypes.PIGLIN_BRUTE)) visibilityPercent *= 0.25;
             } else if (itemStack.is(Items.CREEPER_HEAD)) {
-                if (targetingEntity.is(EntityType.CREEPER)) visibilityPercent *= 0.25;
+                if (targetingEntity.is(EntityTypes.CREEPER)) visibilityPercent *= 0.25;
             } else if (itemStack.is(Items.WITHER_SKELETON_SKULL)) {
-                if (targetingEntity.is(EntityType.WITHER_SKELETON)) visibilityPercent *= 0.25;
+                if (targetingEntity.is(EntityTypes.WITHER_SKELETON)) visibilityPercent *= 0.25;
             }
         }
 
