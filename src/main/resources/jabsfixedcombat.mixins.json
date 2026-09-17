@@ -5,6 +5,7 @@
   "mixins": [
     "AbstractBoatMixin",
     "ArmorMaterialMixin",
+    "BaseFireBlockMixin",
     "BlocksMixin",
     "EntityMixin",
     "InventoryMixin",
@@ -65,6 +66,7 @@
     "mobs.DrownedMixin",
     "mobs.LivingEntityMixin",
     "mobs.MobMixin",
+    "mobs.MonsterRoomFeatureMixin",
     "mobs.PiglinMixin",
     "mobs.TargetGoalMixin",
     "mobs.WitherBossMixin",
