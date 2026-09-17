@@ -38,6 +38,7 @@ public class JabsFixedCombat implements ModInitializer {
 		LOGGER.info("Initializing " + MOD_NAME);
 		SyncHandler.init();
 
+		BlockRegistry.registerBlocks();
 		ItemRegistry.registerItems();
 		ItemGroupRegistry.register();
 		GameRuleRegistry.registerGameRules();

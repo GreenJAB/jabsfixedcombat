@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_fire_side",
+  "textures": {
+    "fire": "jabsfixedcombat:block/end_fire_0"
+  }
+}
