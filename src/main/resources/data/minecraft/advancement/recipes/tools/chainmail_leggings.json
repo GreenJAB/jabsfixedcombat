@@ -13,7 +13,7 @@
         },
         "has_the_recipe": {
             "conditions": {
-                "recipe": "jabsfixedcombat:chainmail_leggings"
+                "recipes": "jabsfixedcombat:chainmail_leggings"
             },
             "trigger": "minecraft:recipe_unlocked"
         }

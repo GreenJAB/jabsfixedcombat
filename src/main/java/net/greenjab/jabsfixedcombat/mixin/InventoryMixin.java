@@ -8,6 +8,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.EntityEquipment;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -34,8 +35,15 @@ public abstract class InventoryMixin {
         else {
             for (EquipmentSlot slot : instance.items.keySet()) {
                 if (!instance.get(slot).is(ModTags.PARTIAL_KEEP_INVENTORY)) {
-                    dropper.drop(instance.get(slot), true, false);
-                    instance.set(slot, ItemStack.EMPTY);
+                    ItemEntity entity = dropper.createItemStackToDrop(instance.get(slot), true, false);
+                    if (entity!=null) {
+                        int ticks = ((ServerLevel) this.player.level()).getGameRules().get(GameRuleRegistry.ITEM_DEATH_DESPAWN_TIME) * 20 * 60;
+                        if (ticks == 0) entity.setUnlimitedLifetime();
+                        else entity.age = 6000 - ticks;
+                    }
+                    if (entity != null) {
+                        dropper.level().addFreshEntity(entity);
+                    }
                 }
             }
         }

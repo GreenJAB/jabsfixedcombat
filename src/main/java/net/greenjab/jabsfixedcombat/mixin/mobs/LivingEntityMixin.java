@@ -90,7 +90,7 @@ public abstract class LivingEntityMixin {
     }
 
     @Inject(method = "getVisibilityPercent", at = @At(value = "HEAD"), cancellable = true)
-    private void moreSneaky(Entity targetingEntity, CallbackInfoReturnable<Double> cir){
+    private void moreSneaky(ServerLevel serverLevel, Entity targetingEntity, CallbackInfoReturnable<Double> cir){
         LivingEntity LE = (LivingEntity) (Object)this;
         double visibilityPercent = 1.0;
         if (LE.isDiscrete()) visibilityPercent *= 0.25;

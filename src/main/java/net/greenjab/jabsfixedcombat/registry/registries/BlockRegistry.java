@@ -26,7 +26,7 @@ public class BlockRegistry {
                     .instabreak()
                     .lightLevel(_ -> 10)
                     .sound(SoundType.WOOL)
-                    .pushReaction(PushReaction.DESTROY)
+                    .pushReaction(PushReaction.POPPED)
     );
 
     private static Block register(String id, Function<BlockBehaviour.Properties, Block> factory, BlockBehaviour.Properties settings) {

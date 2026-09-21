@@ -15,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "jabsfixedcombat:fixed_totem"
+        "recipes": "jabsfixedcombat:fixed_totem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

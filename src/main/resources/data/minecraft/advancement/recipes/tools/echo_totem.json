@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "jabsfixedcombat:echo_totem"
+        "recipes": "jabsfixedcombat:echo_totem"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

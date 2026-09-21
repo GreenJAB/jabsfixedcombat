@@ -40,7 +40,7 @@ public abstract class ElderGuardianParticleRenderStateMixin {
         if (particle.y<-500) poseStack.translate(0.0F, 0F, -2F);
     }
 
-    @ModifyArg(method = "fromParticle", at = @At(value = "INVOKE", target = "Lcom/mojang/math/Axis;rotationDegrees(F)Lorg/joml/Quaternionf;"))
+    @ModifyArg(method = "fromParticle", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;rotateDegrees(Lcom/mojang/math/Axis;F)V"))
     private static float phantomSize(float deg, @Local(argsOnly = true) ElderGuardianParticle particle) {
         if (particle.y<-500) deg = -60-deg;
         return deg;

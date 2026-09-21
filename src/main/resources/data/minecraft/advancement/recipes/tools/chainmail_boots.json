@@ -13,7 +13,7 @@
         },
         "has_the_recipe": {
             "conditions": {
-                "recipe": "jabsfixedcombat:chainmail_boots"
+                "recipes": "jabsfixedcombat:chainmail_boots"
             },
             "trigger": "minecraft:recipe_unlocked"
         }

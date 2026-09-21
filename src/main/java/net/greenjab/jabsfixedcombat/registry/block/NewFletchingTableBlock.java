@@ -1,6 +1,5 @@
 package net.greenjab.jabsfixedcombat.registry.block;
 
-import com.mojang.serialization.MapCodec;
 import net.greenjab.jabsfixedcombat.registry.other.FletchingMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -18,13 +17,7 @@ import org.jetbrains.annotations.Nullable;
 import org.jspecify.annotations.NonNull;
 
 public class NewFletchingTableBlock extends Block {
-    public static final MapCodec<NewFletchingTableBlock> CODEC = simpleCodec(NewFletchingTableBlock::new);
     private static final Component TITLE = Component.translatable("container.fletching");
-
-    @Override
-    public @NonNull MapCodec<NewFletchingTableBlock> codec() {
-        return CODEC;
-    }
 
     public NewFletchingTableBlock(Properties settings) {
         super(settings);

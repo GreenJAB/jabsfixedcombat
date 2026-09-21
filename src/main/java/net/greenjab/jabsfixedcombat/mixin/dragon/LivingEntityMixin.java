@@ -8,7 +8,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Endermite;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -33,7 +33,7 @@ public abstract class LivingEntityMixin {
         if (LE instanceof Endermite) {
             Entity entity = source.getEntity();
             if (entity!=null) {
-                if (entity instanceof EnderMan endermanEntity){
+                if (entity instanceof Enderman endermanEntity){
                     LivingEntity livingEntity = endermanEntity.level().getNearestPlayer(
                             endermanEntity.getX(), endermanEntity.getY(), endermanEntity.getZ(), 100.0,true);
                     endermanEntity.setTarget(livingEntity);

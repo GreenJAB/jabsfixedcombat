@@ -13,7 +13,7 @@
         },
         "has_the_recipe": {
             "conditions": {
-                "recipe": "jabsfixedcombat:rotten_flesh_regular"
+                "recipes": "jabsfixedcombat:rotten_flesh_regular"
             },
             "trigger": "minecraft:recipe_unlocked"
         }

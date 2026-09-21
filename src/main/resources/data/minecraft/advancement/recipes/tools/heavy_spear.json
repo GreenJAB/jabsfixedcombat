@@ -13,7 +13,7 @@
         },
         "has_the_recipe": {
             "conditions": {
-                "recipe": "jabsfixedcombat:heavy_spear"
+                "recipes": "jabsfixedcombat:heavy_spear"
             },
             "trigger": "minecraft:recipe_unlocked"
         }

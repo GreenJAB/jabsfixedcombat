@@ -11,9 +11,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.SwingAnimation;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.NonNull;
 import org.spongepowered.asm.mixin.Mixin;
@@ -23,7 +22,6 @@ import org.spongepowered.asm.mixin.injection.Constant;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyConstant;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ServerPlayer.class)
 public abstract class ServerPlayerMixin extends Player {
@@ -64,20 +62,10 @@ public abstract class ServerPlayerMixin extends Player {
         return 0;
     }
 
-    @Inject(method = "swing", at = @At("TAIL"))
-    private void missCooldown(InteractionHand hand, CallbackInfo ci) {
+    @Inject(method = "swingAndResetAttackStrength", at = @At("TAIL"))
+    private void missCooldown(InteractionHand hand, SwingAnimation animation, boolean sendToSwingingEntity, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
         if (player.getLastHurtMobTimestamp() != this.tickCount) player.attackStrengthTicker = (int)(player.getCurrentItemAttackStrengthDelay()/2.0);
-    }
-
-    @Inject(method = "drop(Lnet/minecraft/world/item/ItemStack;ZZ)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At(value = "RETURN"))
-    private void itemsOnGroundForLonger(ItemStack itemStack, boolean randomly, boolean thrownFromHand, CallbackInfoReturnable<ItemEntity> cir,
-                                        @Local ItemEntity entity) {
-        if (!thrownFromHand && entity != null) {
-            int ticks = this.level().getGameRules().get(GameRuleRegistry.ITEM_DEATH_DESPAWN_TIME)*20*60;
-            if (ticks == 0) entity.setUnlimitedLifetime();
-            else entity.age = 6000-ticks;
-        }
     }
 
     @ModifyExpressionValue(method = "restoreFrom", at = @At(value = "INVOKE",

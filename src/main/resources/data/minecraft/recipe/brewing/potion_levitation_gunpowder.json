@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:brewing",
+  "input": {
+    "item": "minecraft:potion",
+    "potion_contents": {
+      "potions": "jabsfixedcombat:levitation"
+    }
+  },
+  "output": {
+    "components": {
+      "minecraft:potion_contents": {
+        "potion": "jabsfixedcombat:levitation"
+      }
+    },
+    "id": "minecraft:splash_potion"
+  },
+  "reagent": {
+    "item": "minecraft:gunpowder"
+  }
+}

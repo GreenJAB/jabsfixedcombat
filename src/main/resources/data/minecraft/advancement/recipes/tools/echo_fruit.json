@@ -27,7 +27,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "jabsfixedcombat:echo_fruit"
+        "recipes": "jabsfixedcombat:echo_fruit"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

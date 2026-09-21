@@ -13,13 +13,13 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.entries.UniformContainerBase;
 import net.minecraft.world.level.storage.loot.functions.EnchantWithLevelsFunction;
 import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import org.jspecify.annotations.NonNull;
+import net.minecraft.world.level.storage.loot.providers.number.ints.ContextIntProviders;
 
 public class LootTableAdditions {
 
@@ -27,6 +27,7 @@ public class LootTableAdditions {
         System.out.println("register LootTableAdds");
 
         LootTableEvents.MODIFY.register((key, tableBuilder, _, holder) -> {
+            HolderLookup.RegistryLookup<LootTable> lootTables = holder.lookupOrThrow(Registries.LOOT_TABLE);
             HolderLookup.RegistryLookup<Enchantment> enchantments = holder.lookupOrThrow(Registries.ENCHANTMENT);
             if (key==BuiltInLootTables.ANCIENT_CITY) {
                 tableBuilder.pool(LootPool.lootPool().add(LootItem.lootTableItem(Items.AIR).setWeight(5))
@@ -36,27 +37,27 @@ public class LootTableAdditions {
                         .build());
                 tableBuilder.pool(LootPool.lootPool().add(LootItem.lootTableItem(Items.ECHO_SHARD)).build());
             } else if (key== EntityTypes.GOAT.getDefaultLootTable().get()) {
-                LootPool.Builder poolBuilder = LootPool.lootPool().add(NestedLootTable.lootTableReference(LootTableRegistry.GOAT_MUTTON));
+                LootPool.Builder poolBuilder = LootPool.lootPool().add(NestedLootTable.lootTableReference(lootTables.getOrThrow(LootTableRegistry.GOAT_MUTTON)));
                 tableBuilder.pool(poolBuilder.build());
             } else if (key==BuiltInLootTables.CHARGED_CREEPER) {
-                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(LootTableRegistry.CHARGED_CREEPER_ZOMBIE_TABLE).when(LootItemEntityPropertyCondition.hasProperties(
+                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(lootTables.getOrThrow(LootTableRegistry.CHARGED_CREEPER_ZOMBIE_TABLE)).when(LootItemEntityPropertyCondition.hasProperties(
                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(holder.lookupOrThrow(Registries.ENTITY_TYPE), EntityTypes.DROWNED))))).build());
-                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(LootTableRegistry.CHARGED_CREEPER_ZOMBIE_TABLE).when(LootItemEntityPropertyCondition.hasProperties(
+                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(lootTables.getOrThrow(LootTableRegistry.CHARGED_CREEPER_ZOMBIE_TABLE)).when(LootItemEntityPropertyCondition.hasProperties(
                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(holder.lookupOrThrow(Registries.ENTITY_TYPE), EntityTypes.HUSK))))).build());
 
-                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(LootTableRegistry.CHARGED_CREEPER_SKELETON_TABLE).when(LootItemEntityPropertyCondition.hasProperties(
+                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(lootTables.getOrThrow(LootTableRegistry.CHARGED_CREEPER_SKELETON_TABLE)).when(LootItemEntityPropertyCondition.hasProperties(
                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(holder.lookupOrThrow(Registries.ENTITY_TYPE), EntityTypes.BOGGED))))).build());
-                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(LootTableRegistry.CHARGED_CREEPER_SKELETON_TABLE).when(LootItemEntityPropertyCondition.hasProperties(
+                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(lootTables.getOrThrow(LootTableRegistry.CHARGED_CREEPER_SKELETON_TABLE)).when(LootItemEntityPropertyCondition.hasProperties(
                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(holder.lookupOrThrow(Registries.ENTITY_TYPE), EntityTypes.STRAY))))).build());
-                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(LootTableRegistry.CHARGED_CREEPER_SKELETON_TABLE).when(LootItemEntityPropertyCondition.hasProperties(
+                tableBuilder.pool(LootPool.lootPool().add(NestedLootTable.lootTableReference(lootTables.getOrThrow(LootTableRegistry.CHARGED_CREEPER_SKELETON_TABLE)).when(LootItemEntityPropertyCondition.hasProperties(
                         LootContext.EntityTarget.THIS, EntityPredicate.Builder.entity().entityType(EntityTypePredicate.of(holder.lookupOrThrow(Registries.ENTITY_TYPE), EntityTypes.PARCHED))))).build());
             }
 	  });
     }
 
-    private static LootPoolSingletonContainer.@NonNull Builder<?> enchantedArmor(HolderLookup.RegistryLookup<Enchantment> enchantments, Item armor) {
+    private static UniformContainerBase.Builder<?> enchantedArmor(HolderLookup.RegistryLookup<Enchantment> enchantments, Item armor) {
         return LootItem.lootTableItem(armor).setWeight(1)
-                .apply(new EnchantWithLevelsFunction.Builder(ConstantValue.exactly(30))
+                .apply(new EnchantWithLevelsFunction.Builder(ContextIntProviders.exactly(30))
                         .withOptions(enchantments.get(EnchantmentTags.ON_RANDOM_LOOT).map(named -> named)));
     }
 }

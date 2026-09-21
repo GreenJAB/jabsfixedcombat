@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.levelgen.feature.MonsterRoomFeature;
@@ -14,20 +15,20 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(MonsterRoomFeature.class)
 public abstract class MonsterRoomFeatureMixin {
-    @ModifyExpressionValue(method = "place(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/feature/MonsterRoomFeature;randomEntityId(Lnet/minecraft/util/RandomSource;)Lnet/minecraft/world/entity/EntityType;"))
-    private EntityType<?> biomeVariant(EntityType<?> original, @Local BlockPos origin, @Local WorldGenLevel level) {
+    @ModifyExpressionValue(method = "place", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/level/levelgen/feature/MonsterRoomFeature;randomEntityId(Lnet/minecraft/util/RandomSource;)Lnet/minecraft/world/entity/EntityType;"))
+    private EntityType<?> biomeVariant(EntityType<?> original, @Local(argsOnly = true) BlockPos origin, @Local(argsOnly = true) WorldGenLevel level) {
         Holder<Biome> biome =  level.getBiome(origin);
-        if (original == EntityType.ZOMBIE) {
-            if (biome.is(BiomeTags.HAS_DESERT_PYRAMID)) return EntityType.HUSK;
-            else if (biome.is(BiomeTags.IS_OCEAN)) return EntityType.DROWNED;
+        if (original == EntityTypes.ZOMBIE) {
+            if (biome.is(BiomeTags.HAS_DESERT_PYRAMID)) return EntityTypes.HUSK;
+            else if (biome.is(BiomeTags.IS_OCEAN)) return EntityTypes.DROWNED;
         }
-        if (original == EntityType.SKELETON) {
-            if (biome.is(BiomeTags.SPAWNS_SNOW_FOXES)) return EntityType.STRAY;
-            else if (biome.is(BiomeTags.HAS_SWAMP_HUT)) return EntityType.BOGGED;
-            else if (biome.is(BiomeTags.HAS_DESERT_PYRAMID)) return EntityType.PARCHED;
+        if (original == EntityTypes.SKELETON) {
+            if (biome.is(BiomeTags.SPAWNS_SNOW_FOXES)) return EntityTypes.STRAY;
+            else if (biome.is(BiomeTags.HAS_SWAMP_HUT)) return EntityTypes.BOGGED;
+            else if (biome.is(BiomeTags.HAS_DESERT_PYRAMID)) return EntityTypes.PARCHED;
         }
-        if (original == EntityType.SPIDER) {
-            if (biome.is(BiomeTags.IS_MOUNTAIN)) return EntityType.CAVE_SPIDER;
+        if (original == EntityTypes.SPIDER) {
+            if (biome.is(BiomeTags.IS_MOUNTAIN)) return EntityTypes.CAVE_SPIDER;
         }
         return original;
     }

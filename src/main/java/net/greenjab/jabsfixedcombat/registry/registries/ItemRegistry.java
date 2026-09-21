@@ -49,9 +49,12 @@ public class ItemRegistry {
     }
 
     /** This is used, IntelliJ just doesn't realise */
-    public static final Holder<Potion> BLINDNESS = register("blindness", new Potion("blindness", new MobEffectInstance(MobEffects.BLINDNESS, 800)));
-    public static final Holder<Potion> LEVITATION = register("levitation", new Potion("levitation", new MobEffectInstance(MobEffects.LEVITATION, 1200)));
-
+    public static Holder<Potion> BLINDNESS;
+    public static Holder<Potion> LEVITATION;
+    public static void registerItemAdds() {
+        BLINDNESS = register("blindness", new Potion("blindness", new MobEffectInstance(MobEffects.BLINDNESS, 800)));
+        LEVITATION = register("levitation", new Potion("levitation", new MobEffectInstance(MobEffects.LEVITATION, 1200)));
+    }
 
     public static Item register(String id, Item.Properties settings) {
         return register(keyOf(id), Item::new, settings);
