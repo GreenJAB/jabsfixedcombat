@@ -8,7 +8,6 @@
     "BaseFireBlockMixin",
     "BlocksMixin",
     "EntityMixin",
-    "InventoryMixin",
     "KineticWeaponMixin",
     "MinecraftServerMixin",
     "PlayerMixin",
