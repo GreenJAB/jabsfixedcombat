@@ -26,8 +26,6 @@ public class GameRuleRegistry {
     public static GameRule<Boolean> EAT_HIT_CANCELLING;
 
     public static GameRule<Boolean> RESPAWN_WITH_LESS_HEALTH;
-    public static GameRule<Boolean> PARTIAL_KEEP_INVENTORY;
-    public static GameRule<Integer> ITEM_DEATH_DESPAWN_TIME;
 
     public static GameRule<Boolean> STRONGER_MOBS;
     public static GameRule<Boolean> MOBS_LEAVE_VEHICLES_WHEN_ATTACKED;
@@ -54,8 +52,7 @@ public class GameRuleRegistry {
         EAT_HIT_CANCELLING = registerBoolean("eat_hit_cancelling", true);
 
         RESPAWN_WITH_LESS_HEALTH = registerBoolean("respawn_with_less_health", true);
-        PARTIAL_KEEP_INVENTORY = registerBoolean("partial_keep_inventory", false);
-        ITEM_DEATH_DESPAWN_TIME = registerInteger("item_death_despawn_time", 30, 0, 30);
+
 
         STRONGER_MOBS = registerBoolean("stronger_mobs", true);
         MOBS_LEAVE_VEHICLES_WHEN_ATTACKED = registerBoolean("mobs_leave_vehicles_when_attacked", true);

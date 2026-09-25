@@ -12,6 +12,5 @@ public class ModTags {
     public static final TagKey<Item> BREEZE_ROD = TagKey.create(Registries.ITEM, JabsFixedCombat.id("breeze_rod"));
     public static final TagKey<Item> COPPER_ARMOR = TagKey.create(Registries.ITEM, JabsFixedCombat.id("copper_armor"));
     public static final TagKey<Item> UNBREAKABLE = TagKey.create(Registries.ITEM, JabsFixedCombat.id("unbreakable"));
-    public static final TagKey<Item> PARTIAL_KEEP_INVENTORY = TagKey.create(Registries.ITEM, JabsFixedCombat.id("partial_keep_inventory"));
 
 }

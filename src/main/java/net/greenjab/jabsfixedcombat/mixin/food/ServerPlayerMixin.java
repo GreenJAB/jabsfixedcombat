@@ -1,12 +1,8 @@
 package net.greenjab.jabsfixedcombat.mixin.food;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.authlib.GameProfile;
 import net.greenjab.jabsfixedcombat.JabsFixedCombat;
 import net.greenjab.jabsfixedcombat.network.SyncHandler;
-import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
-import net.greenjab.jabsfixedcombat.util.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -66,20 +62,5 @@ public abstract class ServerPlayerMixin extends Player {
     private void missCooldown(InteractionHand hand, SwingAnimation animation, boolean sendToSwingingEntity, CallbackInfo ci) {
         ServerPlayer player = (ServerPlayer) (Object) this;
         if (player.getLastHurtMobTimestamp() != this.tickCount) player.attackStrengthTicker = (int)(player.getCurrentItemAttackStrengthDelay()/2.0);
-    }
-
-    @ModifyExpressionValue(method = "restoreFrom", at = @At(value = "INVOKE",
-            target = "Lnet/minecraft/world/level/gamerules/GameRules;get(Lnet/minecraft/world/level/gamerules/GameRule;)Ljava/lang/Object;"))
-    private <T> T noDropSpecialItems(T original, @Local(argsOnly = true) ServerPlayer oldPlayer) {
-        if (!oldPlayer.level().getGameRules().get(GameRuleRegistry.PARTIAL_KEEP_INVENTORY)) return original;
-        if ((boolean) original || oldPlayer.isSpectator()) {
-            return original;
-        } else {
-            for (int i = 0; i < this.getInventory().getContainerSize(); i++) {
-                if (oldPlayer.getInventory().getItem(i).is(ModTags.PARTIAL_KEEP_INVENTORY))
-                    this.getInventory().setItem(i, oldPlayer.getInventory().getItem(i));
-            }
-        }
-        return original;
     }
 }
