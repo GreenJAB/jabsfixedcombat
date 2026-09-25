@@ -1,0 +1,9 @@
+{
+    "replace": false,
+    "values": [
+        "jabsfixedcombat:heavy_spear",
+        "jabsfixedcombat:echo_fruit",
+        "jabsfixedcombat:echo_totem",
+        "jabsfixedcombat:broken_totem"
+    ]
+}
