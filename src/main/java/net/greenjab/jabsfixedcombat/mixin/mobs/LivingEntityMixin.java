@@ -1,5 +1,7 @@
 package net.greenjab.jabsfixedcombat.mixin.mobs;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.greenjab.jabsfixedcombat.registry.registries.GameRuleRegistry;
 import net.greenjab.jabsfixedcombat.util.ModTags;
 import net.minecraft.core.BlockPos;
@@ -11,6 +13,7 @@ import net.minecraft.world.entity.animal.allay.Allay;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.Vex;
 import net.minecraft.world.entity.monster.skeleton.WitherSkeleton;
+import net.minecraft.world.entity.projectile.arrow.Arrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.LightLayer;
@@ -122,5 +125,15 @@ public abstract class LivingEntityMixin {
         visibilityPercent*=(1-0.02*(15-light));
 
         cir.setReturnValue(visibilityPercent);
+    }
+
+
+    @ModifyExpressionValue(method = "hurtServer", at = @At(
+            value = "INVOKE",
+            target = "Lnet/minecraft/world/damagesource/DamageSource;is(Lnet/minecraft/tags/TagKey;)Z", ordinal = 3
+    ))
+    private boolean piercingArrowsPierce(boolean original, @Local(argsOnly = true) DamageSource source){
+        if (source.getDirectEntity() instanceof Arrow arrow && arrow.getPierceLevel()!=0)return true;
+        return original;
     }
 }
