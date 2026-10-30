@@ -16,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
@@ -71,7 +72,7 @@ public class BrickEntity extends ThrowableItemProjectile {
             BlockPos target = blockHit.getBlockPos();
             BlockState blockState = this.level().getBlockState(target);
             if (blockState.is(ModTags.GLASS_PANES)) {
-                blockState.getBlock().spawnDestroyParticles(this.level(), target, blockState);
+                this.level().levelEvent(null, 2001, target, Block.getId(blockState));
                 this.level().setBlock(target, Blocks.AIR.defaultBlockState(),3);
                 this.level().gameEvent(GameEvent.BLOCK_DESTROY, target, GameEvent.Context.of(this, this.level().getBlockState(target)));
                 this.level().playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.GLASS_BREAK, SoundSource.BLOCKS);
