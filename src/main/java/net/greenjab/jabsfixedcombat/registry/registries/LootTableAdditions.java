@@ -29,7 +29,7 @@ public class LootTableAdditions {
         LootTableEvents.MODIFY.register((key, tableBuilder, _, holder) -> {
             HolderLookup.RegistryLookup<Enchantment> enchantments = holder.lookupOrThrow(Registries.ENCHANTMENT);
             if (key==BuiltInLootTables.ANCIENT_CITY) {
-                tableBuilder.pool(LootPool.lootPool().add(LootItem.lootTableItem(Items.AIR).setWeight(5))
+                tableBuilder.pool(LootPool.lootPool().add(LootItem.lootTableItem(Items.AIR).setWeight(15))
                         .add(enchantedArmor(enchantments, Items.DIAMOND_HELMET))
                         .add(enchantedArmor(enchantments, Items.DIAMOND_CHESTPLATE))
                         .add(enchantedArmor(enchantments, Items.DIAMOND_BOOTS))

@@ -11,7 +11,7 @@ import net.minecraft.world.level.gamerules.GameRules;
 public class GameRuleStatus {
     public boolean use_stamina;
     public boolean use_totem;
-    public boolean eat_duration;
+    public int eat_duration;
     public boolean modified_beacon;
     public boolean modified_dragon;
     public boolean modified_wither;
@@ -31,7 +31,7 @@ public class GameRuleStatus {
     void toPacket(FriendlyByteBuf buf) {
         buf.writeBoolean(use_stamina);
         buf.writeBoolean(use_totem);
-        buf.writeBoolean(eat_duration);
+        buf.writeInt(eat_duration);
         buf.writeBoolean(modified_beacon);
         buf.writeBoolean(modified_dragon);
         buf.writeBoolean(modified_wither);
@@ -41,7 +41,7 @@ public class GameRuleStatus {
         GameRuleStatus p = new GameRuleStatus();
         p.use_stamina = buf.readBoolean();
         p.use_totem = buf.readBoolean();
-        p.eat_duration = buf.readBoolean();
+        p.eat_duration = buf.readInt();
         p.modified_beacon = buf.readBoolean();
         p.modified_dragon = buf.readBoolean();
         p.modified_wither = buf.readBoolean();
