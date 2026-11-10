@@ -91,6 +91,7 @@
     "phantom.ServerLevelMixin",
     "phantom.ServerPlayerMixin",
     "raid.EvokerMixin",
+    "raid.EvokerSummonSpellGoalMixin",
     "raid.IllusionerBlindnessSpellGoalMixin",
     "raid.IllusionerMixin",
     "raid.LivingEntityMixin",
