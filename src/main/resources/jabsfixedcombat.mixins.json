@@ -5,7 +5,6 @@
   "mixins": [
     "AbstractBoatMixin",
     "ArmorMaterialMixin",
-    "dragon.BaseFireBlockMixin",
     "BlocksMixin",
     "EntityMixin",
     "KineticWeaponMixin",
@@ -14,6 +13,7 @@
     "ProjectileUtilMixin",
     "ThrownTridentMixin",
     "ToolMaterialMixin",
+    "dragon.BaseFireBlockMixin",
     "dragon.BottleItemMixin",
     "dragon.DragonChargePlayerPhaseMixin",
     "dragon.DragonFireballMixin",
@@ -89,6 +89,7 @@
     "phantom.PlayerMixin",
     "phantom.ServerLevelMixin",
     "raid.EvokerMixin",
+    "raid.EvokerSummonSpellGoalMixin",
     "raid.IllusionerBlindnessSpellGoalMixin",
     "raid.IllusionerMixin",
     "raid.LivingEntityMixin",

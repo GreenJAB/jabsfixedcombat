@@ -30,7 +30,7 @@
     "gamerule.jabsfixedcombat.stamina_drain_speed.description": "Speed at which actions drain stamina. Set to 0 to remove stamina entirely (revert to vanilla Saturation)",
     "gamerule.jabsfixedcombat.eat_hit_cancelling": "Getting Hit while Eating Resets the animation",
     "gamerule.jabsfixedcombat.eat_duration_proportional_to_food": "Eat Duration Proportional to Food",
-    "gamerule.jabsfixedcombat.eat_duration_proportional_to_fooddescription": "Small foods are quick to eat, Large foods take longer, Golden foods take 3 seconds",
+    "gamerule.jabsfixedcombat.eat_duration_proportional_to_fooddescription": "(0 vanilla - 7 extreme) Small foods are quick to eat, Large foods take longer, Golden foods take 3 seconds",
     "gamerule.jabsfixedcombat.respawn_with_less_health": "Respawn with Less Health",
     "gamerule.jabsfixedcombat.respawn_with_less_health.description": "Based on the difficulty Respawn with less Health/Food (Easy 10 / Normal 5 / Hard 3)",
     "gamerule.jabsfixedcombat.stronger_mobs": "Stronger Mobs",

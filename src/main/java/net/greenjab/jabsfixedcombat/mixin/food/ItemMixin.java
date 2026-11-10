@@ -19,6 +19,7 @@ import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraft.world.item.component.UseRemainder;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,9 +32,12 @@ public abstract class ItemMixin {
 
     @Inject(method = "getUseDuration", at = @At("HEAD"), cancellable = true)
     private void modifyFoodEatTimes(ItemStack itemStack, LivingEntity user, CallbackInfoReturnable<Integer> cir) {
-        if (!JabsFixedCombat.gameRules.eat_duration) return;
+        if (JabsFixedCombat.gameRules.eat_duration == 0) return;
         if (itemStack.getItem().components().has(DataComponents.FOOD)) {
-            cir.setReturnValue(10 + 6 * itemStack.getItem().components().get(DataComponents.FOOD).nutrition());
+            boolean bowl = itemStack.getItem().components().getOrDefault(DataComponents.USE_REMAINDER, new UseRemainder(new ItemStackTemplate(Items.DIRT))).convertInto().item().value().getDefaultInstance().is(Items.BOWL);
+            int food = itemStack.getItem().components().get(DataComponents.FOOD).nutrition();
+            int dura = 32 - 4*JabsFixedCombat.gameRules.eat_duration + (JabsFixedCombat.gameRules.eat_duration * food)/(bowl?2:1);
+            cir.setReturnValue(Math.min(dura, 60));
             if (itemStack.is(ItemTags.PIGLIN_LOVED)) cir.setReturnValue(60);
         }
     }
