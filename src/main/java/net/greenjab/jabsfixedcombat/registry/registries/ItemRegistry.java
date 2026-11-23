@@ -26,7 +26,6 @@ import java.util.function.Function;
 
 public class ItemRegistry {
 
-    public static final Item BROKEN_TOTEM = register("broken_totem", Item::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON));
     public static final Item ECHO_TOTEM = register(
             "echo_totem", NewTotemItem::new, new Item.Properties().stacksTo(1)
                     .rarity(Rarity.UNCOMMON)

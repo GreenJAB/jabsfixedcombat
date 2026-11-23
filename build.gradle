@@ -3,7 +3,7 @@ plugins {
 	alias(libs.plugins.yamlang)
 }
 
-version = "26.1.2-v3"
+version = "26.1.2-v4"
 group = "net.greenjab.jabsfixedcombat"
 
 base {

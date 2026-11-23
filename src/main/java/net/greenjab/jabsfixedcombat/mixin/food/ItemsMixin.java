@@ -37,29 +37,29 @@ public abstract class ItemsMixin {
         throw new UnsupportedOperationException("Implemented via mixin");
     }
 
-    @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;"), slice = @Slice( from =
+    @WrapOperation(method="<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;"), slice = @Slice(from =
     @At(value = "CONSTANT", args = "stringValue=brick"), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item throwableBrick(String name, Operation<Item> original) {
-        return registerItem("brick", NewBrickItem::new, new Item.Properties().useCooldown(1));}
+        return registerItem("brick", NewBrickItem::new, new Item.Properties().useCooldown(1).stacksTo(16));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
     @At(value = "CONSTANT", args = "stringValue=nether_brick"), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;NETHER_BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item throwableNetherBrick(String name, Operation<Item> original) {
-        return registerItem("nether_brick", NewBrickItem::new, new Item.Properties().useCooldown(1));}
+        return registerItem("nether_brick", NewBrickItem::new, new Item.Properties().useCooldown(1).stacksTo(16));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0), slice = @Slice(from =
     @At(value = "CONSTANT", args = "stringValue=resin_brick"), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;RESIN_BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item throwableResinBrick(String name, Item.Properties properties, Operation<Item> original) {
-        return registerItem("resin_brick", NewBrickItem::new, new Item.Properties().useCooldown(1).trimMaterial(TrimMaterials.RESIN));}
+        return registerItem("resin_brick", NewBrickItem::new, new Item.Properties().useCooldown(1).stacksTo(16).trimMaterial(TrimMaterials.RESIN));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
     @At(value = "CONSTANT", args = "stringValue=totem_of_undying"), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;TOTEM_OF_UNDYING:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item useableTotem(String name, Item.Properties properties, Operation<Item> original) {
-        return registerItem("totem_of_undying", NewTotemItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING));}
+        return registerItem("totem_of_undying", NewTotemItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).durability(1).repairable(Items.NETHER_STAR).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Ljava/lang/String;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
     @At(value = "CONSTANT", args = "stringValue=glistering_melon_slice"), to =
