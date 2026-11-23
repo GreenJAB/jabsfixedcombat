@@ -11,6 +11,6 @@ public abstract class EvokerSummonSpellGoalMixin {
 
     @WrapOperation(method = "performSpellCasting", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/monster/Vex;setLimitedLife(I)V"))
     private void only30SecVex(Vex instance, int lifeTicks, Operation<Void> original) {
-        original.call(instance, 30);
+        original.call(instance, 30*20);
     }
 }

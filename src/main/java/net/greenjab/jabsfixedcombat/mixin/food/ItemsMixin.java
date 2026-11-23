@@ -37,25 +37,25 @@ public abstract class ItemsMixin {
     @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;BRICK:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item throwableBrick(ResourceKey<Item> id, Operation<Item> original) {
-        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1));}
+        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1).stacksTo(16));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
     @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;NETHER_BRICK:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;NETHER_BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item throwableNetherBrick(ResourceKey<Item> id, Operation<Item> original) {
-        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1));}
+        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1).stacksTo(16));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0), slice = @Slice(from =
     @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;RESIN_BRICK:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;RESIN_BRICK:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item throwableResinBrick(ResourceKey<Item> id, Item.Properties properties, Operation<Item> original) {
-        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1).trimMaterial(TrimMaterials.RESIN));}
+        return registerItem(id, NewBrickItem::new, new Item.Properties().useCooldown(1).stacksTo(16).trimMaterial(TrimMaterials.RESIN));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;Lnet/minecraft/world/item/Item$Properties;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
     @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;TOTEM_OF_UNDYING:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =
     @At(value = "FIELD",target = "Lnet/minecraft/world/item/Items;TOTEM_OF_UNDYING:Lnet/minecraft/world/item/Item;", opcode = Opcodes.PUTSTATIC)))
     private static Item useableTotem(ResourceKey<Item> id, Item.Properties properties, Operation<Item> original) {
-        return registerItem(id, NewTotemItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING));}
+        return registerItem(id, NewTotemItem::new, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).durability(1).repairable(Items.NETHER_STAR).component(DataComponents.DEATH_PROTECTION, DeathProtection.TOTEM_OF_UNDYING));}
 
     @WrapOperation(method="<clinit>", at = @At( value = "INVOKE", target = "Lnet/minecraft/world/item/Items;registerItem(Lnet/minecraft/resources/ResourceKey;)Lnet/minecraft/world/item/Item;", ordinal = 0 ), slice = @Slice(from =
     @At(value = "FIELD", target = "Lnet/minecraft/references/ItemIds;PHANTOM_MEMBRANE:Lnet/minecraft/resources/ResourceKey;", opcode = Opcodes.GETSTATIC), to =

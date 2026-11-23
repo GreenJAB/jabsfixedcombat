@@ -28,7 +28,7 @@ public class NewTotemItem extends Item {
     }
     @Override
     public @NonNull InteractionResult use(@NonNull Level level, @NonNull Player user, @NonNull InteractionHand hand)  {
-        if (JabsFixedCombat.gameRules.use_totem) {
+        if (JabsFixedCombat.gameRules.use_totem && !user.getItemInHand(hand).isDamaged()) {
             user.playSound(SoundEvents.SPYGLASS_USE, 1.0f, 1.0f);
             return ItemUtils.startUsingInstantly(level, user, hand);
         }
