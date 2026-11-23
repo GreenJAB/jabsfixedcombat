@@ -75,16 +75,6 @@ public abstract class ItemMixin {
     @Inject(method = "use", at = @At(value = "INVOKE", target =
             "Lnet/minecraft/world/item/ItemStack;has(Lnet/minecraft/core/component/DataComponentType;)Z"), cancellable = true)
     private void swordBlock(Level level, Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir, @Local ItemStack stack) {
-        if (hand==InteractionHand.MAIN_HAND && stack.is(ItemTags.SWORDS)) {
-            ItemStack off = player.getItemInHand(InteractionHand.OFF_HAND);
-            DataComponentMap components = off.getComponents();
-            if (components.has(DataComponents.CONSUMABLE) && components.get(DataComponents.CONSUMABLE).canConsume(player, off)) cir.setReturnValue(InteractionResult.PASS);
-            else if (components.has(DataComponents.BLOCKS_ATTACKS) || components.has(DataComponents.KINETIC_WEAPON) || components.has(DataComponents.INSTRUMENT)) cir.setReturnValue(InteractionResult.PASS);
-            else if (off.getItem() instanceof ProjectileWeaponItem || (off.getItem() instanceof FireworkRocketItem && player.isFallFlying())
-                    || off.getItem() instanceof WindChargeItem || off.getItem() instanceof ThrowablePotionItem
-                    || off.getItem() instanceof TridentItem || off.getItem() instanceof FishingRodItem) cir.setReturnValue(InteractionResult.PASS);
-            else if (off.getItem() instanceof NewTotemItem && JabsFixedCombat.gameRules.use_totem) cir.setReturnValue(InteractionResult.PASS);
-
-        }
+        if (hand==InteractionHand.MAIN_HAND && stack.is(ItemTags.SWORDS) && !player.getItemInHand(InteractionHand.OFF_HAND).isEmpty()) cir.setReturnValue(InteractionResult.PASS);
     }
 }

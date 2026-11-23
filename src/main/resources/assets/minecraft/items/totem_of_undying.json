@@ -2,8 +2,24 @@
     "model": {
         "type": "minecraft:condition",
         "on_false": {
-            "type": "minecraft:model",
-            "model": "minecraft:item/totem_of_undying"
+            "type": "minecraft:range_dispatch",
+            "property": "minecraft:damage",
+            "entries": [
+                {
+                    "threshold": 0,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "minecraft:item/totem_of_undying"
+                    }
+                },
+                {
+                    "threshold": 0.5,
+                    "model": {
+                        "type": "minecraft:model",
+                        "model": "fixedminecraft:item/broken_totem"
+                    }
+                }
+            ]
         },
         "on_true": {
             "type": "minecraft:model",

@@ -3,11 +3,10 @@
     "category": "equipment",
     "pattern": [
         "CCC",
-        "IPI"
+        "CPC"
     ],
     "key": {
         "C": "minecraft:iron_chain",
-        "I": "minecraft:iron_nugget",
         "P": "minecraft:leather_helmet"
     },
     "result": {

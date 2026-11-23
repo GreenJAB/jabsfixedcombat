@@ -12,6 +12,7 @@
     "MinecraftServerMixin",
     "PlayerMixin",
     "ProjectileUtilMixin",
+    "RecipeSerializersMixin",
     "ThrownTridentMixin",
     "ToolMaterialMixin",
     "dragon.BottleItemMixin",

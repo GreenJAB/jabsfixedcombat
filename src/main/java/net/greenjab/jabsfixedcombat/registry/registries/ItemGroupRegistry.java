@@ -12,7 +12,6 @@ public class ItemGroupRegistry {
     public static final CreativeModeTab JABS_FIXED_COMBAT = FabricCreativeModeTab.builder().title(Component.translatable("itemgroup.jabsfixedcombat"))
             .icon( () -> new ItemStack(ItemRegistry.HEAVY_SPEAR)).displayItems((_, entries) -> {
                 entries.accept(ItemRegistry.HEAVY_SPEAR);
-                entries.accept(ItemRegistry.BROKEN_TOTEM);
                 entries.accept(ItemRegistry.ECHO_TOTEM);
                 entries.accept(ItemRegistry.ECHO_FRUIT);
                 entries.accept(ItemRegistry.ILLUSIONER_SPAWN_EGG);
